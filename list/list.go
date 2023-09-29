@@ -19,7 +19,7 @@ type List struct {
 	M      int
 }
 
-func CreateMatrix(filename string) (*List, error) {
+func CreateList(filename string) (*List, error) {
 	readfile, err := os.Open(filename)
 
 	if err != nil {
@@ -78,6 +78,7 @@ func CreateMatrix(filename string) (*List, error) {
 		vertex--
 		neighbor--
 
+		// Add neighbor in order
 		list.Vector[vertex].Add(neighbor)
 		list.Vector[neighbor].Add(vertex)
 	}
@@ -87,6 +88,7 @@ func CreateMatrix(filename string) (*List, error) {
 	return list, nil
 }
 
+// Add a neighbor in order (to compare with matrix)
 func (e *Element) Add(neighbor int) {
 	var it *Element
 	for it = e; it.Next != nil; it = it.Next {
@@ -103,6 +105,7 @@ func (e *Element) Add(neighbor int) {
 	newNeighbor.Next = next
 }
 
+// Method to test in smalls graphs
 func (l *List) See() {
 	for i, v := range l.Vector {
 		fmt.Printf("V: %v -- ", i+1)

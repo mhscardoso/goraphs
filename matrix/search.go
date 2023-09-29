@@ -8,7 +8,7 @@ import (
 // s in [1, N]
 // vertex in [0, N - 1]
 func (A *AdjMatrix) BFS(s int) ([]int, []uint) {
-	if s <= 0 {
+	if s <= 0 || s > A.N {
 		return nil, nil
 	}
 
@@ -70,7 +70,7 @@ func (A *AdjMatrix) BFS(s int) ([]int, []uint) {
 }
 
 func (A *AdjMatrix) DFS(s int) ([]int, []uint) {
-	if s <= 0 {
+	if s <= 0 || s > A.N {
 		return nil, nil
 	}
 
