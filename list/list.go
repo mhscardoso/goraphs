@@ -19,7 +19,8 @@ type List struct {
 	M      int
 }
 
-func CreateList(filename string) (*List, error) {
+// Receives a Function
+func CreateList(filename string, fn func(*Element, int)) (*List, error) {
 	readfile, err := os.Open(filename)
 
 	if err != nil {
@@ -78,9 +79,9 @@ func CreateList(filename string) (*List, error) {
 		vertex--
 		neighbor--
 
-		// Add neighbor in order
-		list.Vector[vertex].Add(neighbor)
-		list.Vector[neighbor].Add(vertex)
+		// Add neighbor in order defined by fn
+		fn(&list.Vector[vertex], neighbor)
+		fn(&list.Vector[neighbor], vertex)
 	}
 
 	list.M = m
@@ -88,8 +89,8 @@ func CreateList(filename string) (*List, error) {
 	return list, nil
 }
 
-// Add a neighbor in order (to compare with matrix)
-func (e *Element) Add(neighbor int) {
+// Add a neighbor in order (to compare with matrix in BFS)
+func AddSorted(e *Element, neighbor int) {
 	var it *Element
 	for it = e; it.Next != nil; it = it.Next {
 		if it.Next.Vertex > neighbor {
@@ -103,6 +104,32 @@ func (e *Element) Add(neighbor int) {
 	next := it.Next
 	it.Next = newNeighbor
 	newNeighbor.Next = next
+}
+
+// Add a neighbor in opposite order (to compare with matrix in DFS)
+func AddNotSorted(e *Element, neighbor int) {
+	var it *Element
+	for it = e; it.Next != nil; it = it.Next {
+		if it.Next.Vertex < neighbor {
+			break
+		}
+	}
+
+	newNeighbor := new(Element)
+	newNeighbor.Vertex = neighbor
+
+	next := it.Next
+	it.Next = newNeighbor
+	newNeighbor.Next = next
+}
+
+func AddInOrder(e *Element, neighbor int) {
+	newNeighbor := new(Element)
+	newNeighbor.Vertex = neighbor
+
+	next := e.Next
+	newNeighbor.Next = next
+	e.Next = newNeighbor
 }
 
 // Method to test in smalls graphs

@@ -9,13 +9,20 @@ import (
 
 func main() {
 	fmt.Printf("Lendo o Grafo do disco...\n")
-	ls, err := list.CreateList("../grafos/grafo_6.txt")
+
+	fu := list.AddInOrder
+
+	ls, err := list.CreateList("test.txt", fu)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("Mostrando!\n")
+
+	ls.See()
+
 	fmt.Printf("Grafo lido, fazendo a BFS\n")
 
-	parent, level := ls.BFS(10)
+	parent, level := ls.DFS(1)
 
 	for i, v := range parent {
 		fmt.Printf("V: %v -- P: %v -- L: %v\n", i+1, v, level[i])

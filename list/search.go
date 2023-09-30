@@ -1,6 +1,9 @@
 package list
 
-import "github.com/mhscardoso/goraphs/queue"
+import (
+	"github.com/mhscardoso/goraphs/queue"
+	"github.com/mhscardoso/goraphs/stack"
+)
 
 func (L *List) BFS(s int) ([]int, []uint) {
 
@@ -42,6 +45,50 @@ func (L *List) BFS(s int) ([]int, []uint) {
 				Q.Insert(w.Vertex)                     // Insert in queue
 				parent[w.Vertex] = exploring + 1       // Save its parent
 				level[w.Vertex] = level_exploring_plus // Save its level
+			}
+		}
+	}
+
+	return parent, level
+}
+
+func (L *List) DFS(s int) ([]int, []uint) {
+
+	if s <= 0 || s > L.N {
+		return nil, nil
+	}
+
+	// Working from 0 to N-1
+	vertex := s - 1
+
+	// To mark a vertex
+	signal := make([]byte, L.N)
+
+	// Parent os vertices in DFS
+	parent := make([]int, L.N)
+
+	// Level of vertices in DFS
+	level := make([]uint, L.N)
+
+	// Start a new stack and inserts the vertex in it
+	P := stack.New()
+	P.Insert(vertex)
+
+	// While P is not empty
+	for e := P.Remove(); e != nil; e = P.Remove() {
+		exploring := e.Vertex
+		level_plus_one := level[exploring] + 1
+
+		if signal[exploring] == 0 {
+			signal[exploring] = 1
+
+			for w := L.Vector[exploring].Next; w != nil; w = w.Next {
+				P.Insert(w.Vertex) // Inserts neighbor in stack
+
+				if w.Vertex != vertex && parent[w.Vertex] == 0 {
+					parent[w.Vertex] = exploring + 1 // Save parent
+					level[w.Vertex] = level_plus_one // Save level
+				}
 			}
 		}
 	}
