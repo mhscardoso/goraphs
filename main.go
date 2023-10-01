@@ -16,7 +16,7 @@ func main() {
 	// 	panic(err)
 	// }
 
-	B, err := list.CreateList("../grafos/grafo_2ed.txt", list.AddInOrder)
+	B, err := list.CreateList("../grafos/grafo_3.txt", list.AddInOrder)
 	if err != nil {
 		panic(err)
 	}
@@ -29,7 +29,7 @@ func main() {
 	// fmt.Printf("Median: %v\n", median)
 	// fmt.Printf("Middle: %v\n", middle)
 
-	B.SaveData("list_data/grafo2_List.txt")
+	B.SaveData("list_data/grafo3aaa_List.txt")
 	// _, parent, level := B.BFS(10)
 
 	// for i := range parent {
