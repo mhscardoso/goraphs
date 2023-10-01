@@ -96,10 +96,9 @@ func (L *List) DFS(s int) ([]int, []uint) {
 	return parent, level
 }
 
-func (L *List) BFS_with_known_components(s int, signal []byte) ([]byte, *queue.Queue) {
-
+func (L *List) BFS_with_known_components(s int, signal *[]byte, component *queue.Queue) {
 	if s <= 0 || s > L.N {
-		return nil, nil
+		return
 	}
 
 	// Dealing with vertices between 0 -- N-1
@@ -108,12 +107,10 @@ func (L *List) BFS_with_known_components(s int, signal []byte) ([]byte, *queue.Q
 	// Start a Queue
 	Q := queue.New()
 
-	// Save vertices in current component
-	Vertices_in_component := queue.New()
-
 	// Mark given vertex and insert in queue
-	signal[vertex] = 1
+	(*signal)[vertex] = 1
 	Q.Insert(vertex)
+	component.Insert(vertex)
 
 	// For each vertex in queue; While queue not empty
 	// It remeves a vertex in each iteration
@@ -124,13 +121,11 @@ func (L *List) BFS_with_known_components(s int, signal []byte) ([]byte, *queue.Q
 
 		// For each neighbor of vertex
 		for w := L.Vector[exploring].Next; w != nil; w = w.Next {
-			if signal[w.Vertex] == 0 {
-				signal[w.Vertex] = 1 // Mark vertex
-				Q.Insert(w.Vertex)   // Insert in queue
-				Vertices_in_component.Insert(w.Vertex)
+			if (*signal)[w.Vertex] == 0 {
+				(*signal)[w.Vertex] = 1 // Mark vertex
+				Q.Insert(w.Vertex)      // Insert in queue
+				component.Insert(w.Vertex)
 			}
 		}
 	}
-
-	return signal, Vertices_in_component
 }

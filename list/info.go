@@ -59,19 +59,24 @@ func (L *List) SaveData(filename string) {
 
 	// Data about conected components
 	components := make([]*queue.Queue, L.N)
-	component := 1
+	component := 0
 	signal := make([]byte, L.N)
 
-	for i := range signal {
+	for i := 0; i < L.N; i++ {
 		if signal[i] == 1 {
 			continue
 		}
-		fmt.Printf("here\n")
-		signal, components[component-1] = L.BFS_with_known_components(L.Vector[i].Vertex, signal)
 		component++
+		components[component-1] = queue.New()
+		L.BFS_with_known_components(
+			L.Vector[i].Vertex+1,
+			&signal,
+			components[component-1])
 	}
 
 	for i := 0; i < component; i++ {
-		fmt.Printf("%v\n", components[i].Size)
+		if components[i].Size > 1 {
+			fmt.Printf("C: %v -- S: %v\n", i, components[i].Size)
+		}
 	}
 }
