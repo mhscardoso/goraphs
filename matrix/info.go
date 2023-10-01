@@ -1,20 +1,22 @@
 package matrix
 
 import (
-	"github.com/mhscardoso/goraphs/sort"
+	"fmt"
 )
 
-func (A *AdjMatrix) GetInfo() (int, int, int, int, float32, float32) {
+func (A *AdjMatrix) GetInfo() (int, int, int, int, float32, float32, []int) {
 	edges := make([]int, A.N)
 	var sum float32 = 0
-	for i, v := range A.P {
-		edges[i] = GetDegree(v)
+	for i := range A.P {
+		edges[i] = GetDegree(A.P[i])
 		sum += float32(edges[i])
 	}
 
+	fmt.Printf("Sum Matrix: %v\nSum Matrix: %v\nA.M: %v\n\n", sum == float32(2*A.M), sum, 2*A.M)
+
 	median := sum / float32(A.N)
 
-	sort.Sort(&edges)
+	//sort.Sort(&edges)
 
 	var middle float32
 
@@ -24,20 +26,17 @@ func (A *AdjMatrix) GetInfo() (int, int, int, int, float32, float32) {
 		middle = float32(edges[A.N/2]) / 2
 	}
 
-	return A.N, A.M, edges[0], edges[A.N-1], median, middle
+	return A.N, A.M, edges[0], edges[A.N-1], median, middle, edges
 }
 
 // Get the degree of a given vertex in matrix
 func GetDegree(vertex []byte) int {
-	N := len(vertex)
-
 	neighbors := 0
 
-	for j := 0; j < N; j++ {
-		supposed := vertex[j]
-		if supposed != 0 {
+	for _, v := range vertex {
+		if v != 0 {
 			for bit := 0; bit < 8; bit++ {
-				if supposed&byte(1<<(7-bit)) != 0 {
+				if v&byte(0b00000001<<(7-bit)) != 0 {
 					neighbors++
 				}
 			}

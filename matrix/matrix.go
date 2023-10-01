@@ -71,11 +71,11 @@ func CreateMatrix(filename string) (*AdjMatrix, error) {
 
 	// Number of Edges
 	// Here, we realize the number of
-	// Edges is the number of lines
+	// Edges is the number of lines, but it is false due to duplicate vertices
 	// in the file minus one
 	m := 0
 
-	// Read newxt lines of file
+	// Read next two lines of file
 	for fileScanner.Scan() {
 		// Each line, one edge!
 		m++
@@ -107,8 +107,18 @@ func CreateMatrix(filename string) (*AdjMatrix, error) {
 		byte_house_two := vertex / BITS_IN_BYTE
 		byte_loc_two := (vertex % BITS_IN_BYTE) + 1
 
-		Matrix.P[vertex][byte_house_one] += byte(0b00000001 << (BITS_IN_BYTE - byte_loc_one))
-		Matrix.P[neighbor][byte_house_two] += byte(0b00000001 << (BITS_IN_BYTE - byte_loc_two))
+		if vertex == neighbor {
+			m--
+			continue
+		}
+
+		if Matrix.P[vertex][byte_house_one]&byte(0b00000001<<(BITS_IN_BYTE-byte_loc_one)) == 0 {
+			Matrix.P[vertex][byte_house_one] += byte(0b00000001 << (BITS_IN_BYTE - byte_loc_one))
+			Matrix.P[neighbor][byte_house_two] += byte(0b00000001 << (BITS_IN_BYTE - byte_loc_two))
+		} else {
+			m--
+			//fmt.Printf("V: %v   - N: %v \n", vertex, neighbor)
+		}
 	}
 
 	Matrix.M = m

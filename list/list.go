@@ -20,7 +20,7 @@ type List struct {
 }
 
 // Receives a Function
-func CreateList(filename string, fn func(*Element, int)) (*List, error) {
+func CreateList(filename string, fn func(*Element, int) *Element) (*List, error) {
 	readfile, err := os.Open(filename)
 
 	if err != nil {
@@ -79,9 +79,19 @@ func CreateList(filename string, fn func(*Element, int)) (*List, error) {
 		vertex--
 		neighbor--
 
-		// Add neighbor in order defined by fn
-		fn(&list.Vector[vertex], neighbor)
-		fn(&list.Vector[neighbor], vertex)
+		if vertex == neighbor {
+			m--
+			continue
+		}
+
+		// Add neighbor in order defined by fn - avoiding repeated
+		newNeighbor := fn(&list.Vector[vertex], neighbor)
+
+		if newNeighbor != nil {
+			newNeighbor = fn(&list.Vector[neighbor], vertex)
+		} else {
+			m--
+		}
 	}
 
 	list.M = m
@@ -90,11 +100,13 @@ func CreateList(filename string, fn func(*Element, int)) (*List, error) {
 }
 
 // Add a neighbor in order (to compare with matrix in BFS)
-func AddSorted(e *Element, neighbor int) {
+func AddSorted(e *Element, neighbor int) *Element {
 	var it *Element
 	for it = e; it.Next != nil; it = it.Next {
 		if it.Next.Vertex > neighbor {
 			break
+		} else if it.Next.Vertex == neighbor {
+			return nil
 		}
 	}
 
@@ -104,14 +116,18 @@ func AddSorted(e *Element, neighbor int) {
 	next := it.Next
 	it.Next = newNeighbor
 	newNeighbor.Next = next
+
+	return newNeighbor
 }
 
 // Add a neighbor in opposite order (to compare with matrix in DFS)
-func AddNotSorted(e *Element, neighbor int) {
+func AddNotSorted(e *Element, neighbor int) *Element {
 	var it *Element
 	for it = e; it.Next != nil; it = it.Next {
 		if it.Next.Vertex < neighbor {
 			break
+		} else if it.Next.Vertex == neighbor {
+			return nil
 		}
 	}
 
@@ -121,15 +137,19 @@ func AddNotSorted(e *Element, neighbor int) {
 	next := it.Next
 	it.Next = newNeighbor
 	newNeighbor.Next = next
+
+	return newNeighbor
 }
 
-func AddInOrder(e *Element, neighbor int) {
+func AddInOrder(e *Element, neighbor int) *Element {
 	newNeighbor := new(Element)
 	newNeighbor.Vertex = neighbor
 
 	next := e.Next
 	newNeighbor.Next = next
 	e.Next = newNeighbor
+
+	return newNeighbor
 }
 
 // Method to test in smalls graphs
