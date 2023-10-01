@@ -121,7 +121,7 @@ func CreateMatrix(filename string) (*AdjMatrix, error) {
 // with the real matrix (you can use the test.txt graph to test!).
 // This is caused by any remainder in the division of N by 8
 // bytes can store 8 bits only, not less (nor more)
-func (A *AdjMatrix) ShowMatrix() {
+func (A *AdjMatrix) See() {
 	fmt.Printf("    ")
 	for i := 1; i <= A.N; i++ {
 		fmt.Printf("%v ", i)
