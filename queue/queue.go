@@ -10,6 +10,7 @@ type Node struct {
 type Queue struct {
 	First *Node
 	Last  *Node
+	Size  int
 }
 
 func New() *Queue {
@@ -29,6 +30,7 @@ func (q *Queue) Insert(vertex int) *Node {
 
 		q.First = first
 		q.Last = first
+		q.Size = 1
 
 		return first
 	}
@@ -42,6 +44,7 @@ func (q *Queue) Insert(vertex int) *Node {
 
 	q.Last = newNode
 	last.Back = newNode
+	q.Size++
 
 	return newNode
 }
@@ -52,10 +55,14 @@ func (q *Queue) Remove() *Node {
 		q.First = nil
 		q.Last = nil
 
+		q.Size = 0
+
 		return removed
 	}
 
 	q.First = removed.Back
+	q.Size--
+
 	return removed
 }
 

@@ -1,2 +1,4 @@
 # As we are in windows, all executables finish with .exe
 *.exe
+list_data
+matrix_data

@@ -2,9 +2,12 @@ package matrix
 
 import (
 	"fmt"
+	"os"
+
+	"github.com/mhscardoso/goraphs/sort"
 )
 
-func (A *AdjMatrix) GetInfo() (int, int, int, int, float32, float32, []int) {
+func (A *AdjMatrix) GetInfo() (int, int, int, int, float32, float32) {
 	edges := make([]int, A.N)
 	var sum float32 = 0
 	for i := range A.P {
@@ -12,11 +15,9 @@ func (A *AdjMatrix) GetInfo() (int, int, int, int, float32, float32, []int) {
 		sum += float32(edges[i])
 	}
 
-	fmt.Printf("Sum Matrix: %v\nSum Matrix: %v\nA.M: %v\n\n", sum == float32(2*A.M), sum, 2*A.M)
-
 	median := sum / float32(A.N)
 
-	//sort.Sort(&edges)
+	sort.Sort(&edges)
 
 	var middle float32
 
@@ -26,7 +27,7 @@ func (A *AdjMatrix) GetInfo() (int, int, int, int, float32, float32, []int) {
 		middle = float32(edges[A.N/2]) / 2
 	}
 
-	return A.N, A.M, edges[0], edges[A.N-1], median, middle, edges
+	return A.N, A.M, edges[0], edges[A.N-1], median, middle
 }
 
 // Get the degree of a given vertex in matrix
@@ -43,4 +44,23 @@ func GetDegree(vertex []byte) int {
 		}
 	}
 	return neighbors
+}
+
+func (A *AdjMatrix) SaveData(filename string) {
+	N_a, M_a, min_a, max_a, median_a, middle_a := A.GetInfo()
+
+	f, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	str := fmt.Sprintf("Vertices: %v\nEdges: %v\nMin Degree: %v\nMax Degree: %v\nMean Degrees: %v\nMedian Degrees: %v\n",
+		N_a, M_a, min_a, max_a, median_a, middle_a)
+
+	_, err2 := f.WriteString(str)
+	if err2 != nil {
+		panic(err2)
+	}
 }
