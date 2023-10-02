@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/mhscardoso/goraphs/queue"
 	"github.com/mhscardoso/goraphs/sort"
 )
 
@@ -46,6 +47,28 @@ func GetDegree(vertex []byte) int {
 	return neighbors
 }
 
+func (A *AdjMatrix) ConectedComponents() ([]*queue.Queue, int) {
+	components := make([]*queue.Queue, A.N)
+	component := 0
+	signal := make([]byte, A.N)
+
+	for i := 0; i < A.N; i++ {
+		if signal[i] == 1 {
+			continue
+		}
+		component++
+		components[component-1] = queue.New()
+		A.BFS_with_known_components(
+			i+1,
+			&signal,
+			components[component-1])
+	}
+
+	sort.SortQueue(components, component)
+
+	return components[:component], component
+}
+
 func (A *AdjMatrix) SaveData(filename string) {
 	N_a, M_a, min_a, max_a, median_a, middle_a := A.GetInfo()
 
@@ -58,6 +81,22 @@ func (A *AdjMatrix) SaveData(filename string) {
 
 	str := fmt.Sprintf("Vertices: %v\nEdges: %v\nMin Degree: %v\nMax Degree: %v\nMean Degrees: %v\nMedian Degrees: %v\n",
 		N_a, M_a, min_a, max_a, median_a, middle_a)
+
+	connected, g := A.ConectedComponents()
+
+	str += fmt.Sprintf("Componentes Conexas: %v\n\n", g)
+
+	for i := g - 1; i >= 0; i-- {
+		str += fmt.Sprintf("Componente: %v - Tamanho: %v\n", i, connected[i].Size)
+
+		for q := connected[i].Remove(); q != nil; q = connected[i].Remove() {
+			str += fmt.Sprintf("%v ", q.Vertex)
+		}
+
+		str += fmt.Sprintf("\n\n")
+	}
+
+	fmt.Printf("Escrevendo o Arquivo\n")
 
 	_, err2 := f.WriteString(str)
 	if err2 != nil {
