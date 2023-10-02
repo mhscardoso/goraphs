@@ -16,7 +16,7 @@ func main() {
 		panic(err)
 	}
 
-	measure := A.StatsBFS()
+	measure := A.StatsDFS()
 	fmt.Printf("Tempo medio: %v\n", measure)
 
 }

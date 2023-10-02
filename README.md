@@ -2,6 +2,36 @@
 
 printf("olá, mundo\n");
 
+# Atenção, corretor!
+
+Para fazer os estudos de caso, utilizamos os testes unitários do Go. Para utilizá-los, você pode entrar nas pastas com testes, (list e matrix) via terminal fazendo
+
+```
+cd list
+```
+
+ou 
+
+```
+cd matrix
+```
+
+e rodar todos os testes, fazendo
+
+```
+go test
+```
+
+ou rodar apenas uma função do estudo de caso, fazendo
+
+```
+go test -run <Function Name>
+```
+
+o nome das funções é visível nos arquivos de teste.
+
+**OBS0:** Os arquivos de teste são aqueles que terminam com <em>_test.go</em>
+
 Os códigos deste mísero repositório têm por objetivo analisar o desempenho de algorítmos de <em>Grafos</em> em uma linguagem de programação relativamente conhecida: Golang! Você pode acessar o website oficial dessa Linguagem de Programação [aqui](https://go.dev/).
 
 **OBS1:** Se for pesquisar essa linguagem no Google, trate de pesquisar por <em>**GOLANG**</em> e não apenas <em>GO</em>. Reflita sobre essa afirmação!
