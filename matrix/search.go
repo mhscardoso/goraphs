@@ -7,9 +7,9 @@ import (
 
 // s in [1, N]
 // vertex in [0, N - 1]
-func (A *AdjMatrix) BFS(s int) ([]int, []uint) {
+func (A *AdjMatrix) BFS(s int) ([]byte, []int, []uint) {
 	if s <= 0 || s > A.N {
-		return nil, nil
+		return nil, nil, nil
 	}
 
 	// Deal with vertices in matrix
@@ -66,7 +66,7 @@ func (A *AdjMatrix) BFS(s int) ([]int, []uint) {
 			}
 		}
 	}
-	return parent, level
+	return signal, parent, level
 }
 
 func (A *AdjMatrix) BFS_with_known_components(s int, signal *[]byte, component *queue.Queue) {
