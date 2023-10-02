@@ -11,12 +11,12 @@ func main() {
 
 	fmt.Printf("Lendo o Grafo do disco...\n")
 
-	A, err := list.CreateList("../grafos/grafo_1.txt", list.AddInOrder)
+	A, err := list.CreateList("../grafos/grafo_6.txt", list.AddInOrder)
 	if err != nil {
 		panic(err)
 	}
 
-	dist := A.Diameter()
-	fmt.Printf("Distancia: %v\n", dist)
+	measure := A.StatsBFS()
+	fmt.Printf("Tempo medio: %v\n", measure)
 
 }
