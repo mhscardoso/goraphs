@@ -10,7 +10,7 @@ import (
 // Corretor, edite estas variáveis para que possa ler os arquivos corretos!
 
 // Em minha máquina, os grafos 5 e 6 não foram suportados utilizando Matrizes
-var filenames = [6]string{
+var filenames = [4]string{
 	"../../grafos/grafo_1.txt",
 	"../../grafos/grafo_2.txt",
 	"../../grafos/grafo_3.txt",
