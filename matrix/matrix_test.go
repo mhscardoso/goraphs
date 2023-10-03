@@ -10,7 +10,7 @@ import (
 // Corretor, edite estas variáveis para que possa ler os arquivos corretos!
 
 // Em minha máquina, os grafos 5 e 6 não foram suportados utilizando Matrizes
-var filenames = [4]string{
+var filenames = []string{
 	"../../grafos/grafo_1.txt",
 	"../../grafos/grafo_2.txt",
 	"../../grafos/grafo_3.txt",
@@ -31,6 +31,8 @@ func TestCreateMatrix(t *testing.T) {
 		diff := t2.Sub(t1)
 
 		fmt.Printf("Leitura do arquivo e criação da Matriz: %v s\n", float64(diff.Seconds()))
+
+		time.Sleep(10 * time.Second)
 
 		fmt.Printf("Vértices: %v\nArestas: %v\n\n", A.N, A.M)
 	}
@@ -76,6 +78,7 @@ func TestMeasureDFS(t *testing.T) {
 		for i := 1; i <= 100; i++ {
 			s := rand.Intn(A.N)
 			time += float64(A.MeasureDFS(s))
+			fmt.Printf("Matriz: %v - Tempo: %v\n", i, time)
 		}
 
 		fmt.Printf("Testando 100 DFSs para %v\n", name)

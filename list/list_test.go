@@ -28,6 +28,8 @@ func TestCreateList(t *testing.T) {
 		}
 		t2 := time.Now()
 
+		time.Sleep(10 * time.Second)
+
 		diff := t2.Sub(t1)
 
 		fmt.Printf("Leitura do arquivo e criação da Lista: %v s\n", float64(diff.Seconds()))
