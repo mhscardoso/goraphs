@@ -51,6 +51,7 @@ func TestMeasureBFS(t *testing.T) {
 		for i := 1; i <= 100; i++ {
 			s := rand.Intn(A.N)
 			time += float64(A.MeasureBFS(s))
+			fmt.Printf("Matriz: %v - Tempo: %v\n", i, time)
 		}
 
 		fmt.Printf("Testando 100 BFSs para %v\n", name)

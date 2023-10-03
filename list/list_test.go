@@ -8,7 +8,7 @@ import (
 )
 
 // Corretor, edite estas variáveis para que possa ler os arquivos corretos!
-var filenames = [6]string{
+var filenames = []string{
 	"../../grafos/grafo_1.txt",
 	"../../grafos/grafo_2.txt",
 	"../../grafos/grafo_3.txt",
@@ -149,5 +149,39 @@ func TestConnectedComponents(t *testing.T) {
 
 		fmt.Printf("Grafo de %v\nComponentes Conexas: %v\nMaior Componente: %v\nMenor Componente: %v\n\n",
 			name, graphs, components[graphs-1].Size, components[0].Size)
+	}
+}
+
+func TestDiameterApprox(t *testing.T) {
+	for _, name := range filenames {
+		fmt.Printf("Criando Lista de Adjacências\n")
+
+		L, err := CreateList(name, AddInOrder)
+		if err != nil {
+			t.Fatalf("Error %v in reading file.", err)
+		}
+
+		fmt.Printf("Lista Criada\n")
+
+		dia := L.DiameterApprox()
+
+		fmt.Printf("Grafo: %v\nDiâmetro: %v\n\n", name, dia)
+	}
+}
+
+func TestDiameterReal(t *testing.T) {
+	for _, name := range filenames {
+		fmt.Printf("Criando Lista de Adjacências\n")
+
+		L, err := CreateList(name, AddInOrder)
+		if err != nil {
+			t.Fatalf("Error %v in reading file.", err)
+		}
+
+		fmt.Printf("Lista Criada\n")
+
+		dia := L.Diameter()
+
+		fmt.Printf("Grafo: %v\nDiâmetro: %v\n\n", name, dia)
 	}
 }

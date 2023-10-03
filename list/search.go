@@ -136,6 +136,10 @@ func (L *List) Distance(s int, d int) int {
 		return -1
 	}
 
+	if s == d {
+		return 0
+	}
+
 	// Signal to mark a vertex when discovered
 	signal := make([]byte, L.N)
 
