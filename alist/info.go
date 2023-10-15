@@ -8,37 +8,6 @@ package alist
 // 	"github.com/mhscardoso/goraphs/sort"
 // )
 
-// func (L *List) GetInfo() (int, int, int, int, float32, float32) {
-// 	edges := make([]int, L.N)
-// 	var sum float32 = 0
-// 	for i, v := range L.Vector {
-// 		edges[i] = GetDegree(v)
-// 		sum += float32(edges[i])
-// 	}
-
-// 	median := sum / float32(L.N)
-
-// 	sort.Sort(&edges)
-
-// 	var middle float32
-
-// 	if L.N%2 == 0 {
-// 		middle = (float32(edges[L.N/2]) + float32(edges[(L.N/2)-1])) / 2
-// 	} else {
-// 		middle = float32(edges[L.N/2]) / 2
-// 	}
-
-// 	return L.N, L.M, edges[0], edges[L.N-1], median, middle
-// }
-
-// func GetDegree(e Element) int {
-// 	sum := 0
-// 	for n := e.Next; n != nil; n = n.Next {
-// 		sum++
-// 	}
-// 	return sum
-// }
-
 // func (L *List) ConectedComponents() ([]*queue.Queue, int) {
 // 	components := make([]*queue.Queue, L.N)
 // 	component := 0

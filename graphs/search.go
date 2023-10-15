@@ -6,7 +6,7 @@ import (
 )
 
 // Executes the BFS
-func BFS(g Graph, s int) ([]byte, []int, []uint) {
+func BFS(g Graph, s int, know_signals *[]byte) ([]int, []uint, *queue.Queue) {
 	vertices := g.N()
 
 	if s <= 0 || s > vertices {
@@ -14,7 +14,11 @@ func BFS(g Graph, s int) ([]byte, []int, []uint) {
 	}
 
 	// Signal to mark a vertex when discovered
-	signal := make([]byte, vertices)
+	signal := know_signals
+	if signal == nil {
+		signals := make([]byte, vertices)
+		signal = &signals
+	}
 
 	// parent[i] = j == vertex j is parent of i in BFS tree
 	parent := make([]int, vertices)
@@ -28,9 +32,14 @@ func BFS(g Graph, s int) ([]byte, []int, []uint) {
 	// Start a Queue
 	Q := queue.New()
 
+	// Storing the component in a Queue
+	component := queue.New()
+
 	// Mark given vertex and insert in queue
-	signal[vertex] = 1
+	(*signal)[vertex] = 1
 	Q.Insert(vertex)
+
+	component.Insert(vertex + 1)
 
 	// For each vertex in queue; While queue not empty
 	// It remeves a vertex in each iteration
@@ -44,20 +53,22 @@ func BFS(g Graph, s int) ([]byte, []int, []uint) {
 
 		// For each neighbor of vertex
 		for w := neighbors; w != nil; w = w.Next {
-			if signal[w.Vertex] == 0 {
-				signal[w.Vertex] = 1                   // Mark vertex
+			if (*signal)[w.Vertex] == 0 {
+				(*signal)[w.Vertex] = 1                // Mark vertex
 				Q.Insert(w.Vertex)                     // Insert in queue
 				parent[w.Vertex] = exploring + 1       // Save its parent
 				level[w.Vertex] = level_exploring_plus // Save its level
+
+				component.Insert(w.Vertex + 1) // Save vertex in the graph component
 			}
 		}
 	}
 
-	return signal, parent, level
+	return parent, level, component
 }
 
 // Executes the DFS
-func DFS(g Graph, s int) ([]int, []uint) {
+func DFS(g Graph, s int, know_signals *[]byte) ([]int, []uint) {
 	vertices := g.N()
 
 	if s <= 0 || s > vertices {
@@ -68,7 +79,12 @@ func DFS(g Graph, s int) ([]int, []uint) {
 	vertex := s - 1
 
 	// To mark a vertex
-	signal := make([]byte, vertices)
+	// Signal to mark a vertex when discovered
+	signal := know_signals
+	if signal == nil {
+		signals := make([]byte, vertices)
+		signal = &signals
+	}
 
 	// Parent os vertices in DFS
 	parent := make([]int, vertices)
@@ -85,8 +101,8 @@ func DFS(g Graph, s int) ([]int, []uint) {
 		exploring := e.Vertex
 		level_plus_one := level[exploring] + 1
 
-		if signal[exploring] == 0 {
-			signal[exploring] = 1
+		if (*signal)[exploring] == 0 {
+			(*signal)[exploring] = 1
 
 			neighbors := g.Neighbors(exploring)
 

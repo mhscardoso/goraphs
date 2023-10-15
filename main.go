@@ -7,14 +7,13 @@ import (
 )
 
 func main() {
-	A := graphs.Matrix()
+	A := graphs.List()
 
-	graphs.ReadFile(A, "test.txt")
+	graphs.ReadFile(A, "../grafos/grafo_6.txt")
 
-	A.See()
+	components, _ := graphs.ConectedComponents(A)
 
-	_, parent, _ := graphs.BFS(A, 1)
-	for i, v := range parent {
-		fmt.Printf("%v - %v\n", i+1, v)
+	for _, comp := range components {
+		fmt.Printf("%v\n", comp.Length)
 	}
 }
