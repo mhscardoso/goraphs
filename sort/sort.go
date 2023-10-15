@@ -1,7 +1,7 @@
 package sort
 
 import (
-	"github.com/mhscardoso/goraphs/queue"
+	"github.com/mhscardoso/goraphs/lists"
 	"github.com/mhscardoso/goraphs/stack"
 )
 
@@ -41,7 +41,7 @@ func Sort(arr *[]int) {
 
 }
 
-func SortQueue(arr []*queue.Queue, component int) {
+func SortLists(arr []*lists.Lists, component int) {
 	P := stack.New()
 
 	P.Insert(0)
@@ -51,16 +51,16 @@ func SortQueue(arr []*queue.Queue, component int) {
 		h := P.Remove().Vertex
 		l := P.Remove().Vertex
 
-		x := arr[h].Size
+		x := arr[h].Length
 		i := l - 1
 
 		for j := l; j <= h-1; j++ {
-			if arr[j].Size <= x {
+			if arr[j].Length <= x {
 				i++
-				SwapQueues(arr[i], arr[j])
+				SwapLists(arr[i], arr[j])
 			}
 		}
-		SwapQueues(arr[i+1], arr[h])
+		SwapLists(arr[i+1], arr[h])
 
 		if i > l {
 			P.Insert(l)
@@ -81,7 +81,7 @@ func Swap(a *int, b *int) {
 	*b = t
 }
 
-func SwapQueues(a *queue.Queue, b *queue.Queue) {
+func SwapLists(a *lists.Lists, b *lists.Lists) {
 	t := *a
 	*a = *b
 	*b = t
