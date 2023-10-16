@@ -9,7 +9,10 @@ import (
 func main() {
 	A := graphs.List()
 
-	graphs.ReadFile(A, "../grafos/grafo_6.txt")
+	fmt.Printf("Lendo Grafo do Disco...\n")
+	graphs.ReadFile(A, "../grafos/grafo_2.txt")
+
+	fmt.Printf("Grafo Lido\n")
 
 	components, _ := graphs.ConectedComponents(A)
 
