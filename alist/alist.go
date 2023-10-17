@@ -20,47 +20,44 @@ func (l *List) Allocate(vertices int) {
 	l.Vertices = vertices
 }
 
-// Relate two vertices in order
+func (l *List) AddNeighbor(vertex, neighbor int) *node.Node {
+	newNeighbor := new(node.Node)
+	newNeighbor.Vertex = neighbor
+	newNeighbor.Next = l.Vector[vertex]
+
+	l.Vector[vertex] = newNeighbor
+
+	return newNeighbor
+}
+
+/* Just checks if a given vertex v already
+ * has a neighbor n. Return true case not.
+ */
+func (l *List) CheckNeighbors(vertex, neighbor int) bool {
+	n := l.Neighbors(vertex)
+	for ; n != nil; n = n.Next {
+		if n.Vertex == neighbor {
+			return false
+		}
+	}
+
+	return true
+}
+
+/* Relate two vertices called vertex and neighbor
+ * checking if that neighbor was already inserted
+ * in the given vertex.
+ */
 func (l *List) Relate(vertex, neighbor int, edges *int) {
 	v := vertex - 1
 	n := neighbor - 1
 
-	vertexNode := node.NewNode(v)
-	neighborNode := node.NewNode(n)
-
-	next_v := l.Vector[v]
-	if next_v == nil || next_v.Vertex > n {
-		neighborNode.Next = next_v
-		l.Vector[v] = neighborNode
-	} else {
-		for ; next_v.Next != nil; next_v = next_v.Next {
-			if next_v.Vertex == n {
-				return
-			} else if next_v.Next.Vertex > n {
-				break
-			}
-		}
-
-		neighborNode.Next = next_v.Next
-		next_v.Next = neighborNode
+	if !l.CheckNeighbors(v, n) || v == n {
+		return
 	}
 
-	next_n := l.Vector[n]
-	if next_n == nil || next_n.Vertex > v {
-		vertexNode.Next = next_n
-		l.Vector[n] = vertexNode
-	} else {
-		for ; next_n.Next != nil; next_n = next_n.Next {
-			if next_n.Vertex == v {
-				return
-			} else if next_n.Next.Vertex > v {
-				break
-			}
-		}
-
-		vertexNode.Next = next_n.Next
-		next_n.Next = vertexNode
-	}
+	l.AddNeighbor(v, n)
+	l.AddNeighbor(n, v)
 
 	*edges++
 }

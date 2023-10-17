@@ -35,3 +35,12 @@ func TestListCreate(t *testing.T) {
 		fmt.Printf("Vértices: %v\nArestas: %v\n\n", A.Vertices, A.Edges)
 	}
 }
+
+func TestListEdges(t *testing.T) {
+	for _, name := range filenames {
+		fmt.Printf("Criando Lista de Adjacências para %v\n", name)
+		A := graphs.List()
+
+		graphs.GetInfo(A)
+	}
+}

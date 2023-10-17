@@ -10,13 +10,9 @@ func main() {
 	A := graphs.List()
 
 	fmt.Printf("Lendo Grafo do Disco...\n")
-	graphs.ReadFile(A, "../grafos/grafo_2.txt")
+	graphs.ReadFile(A, "../grafos/grafo_3.txt")
 
 	fmt.Printf("Grafo Lido\n")
 
-	components, _ := graphs.ConectedComponents(A)
-
-	for _, comp := range components {
-		fmt.Printf("%v\n", comp.Length)
-	}
+	graphs.GetInfo(A)
 }

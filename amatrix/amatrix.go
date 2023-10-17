@@ -30,8 +30,14 @@ func (m *Matrix) Relate(vertex, neighbor int, edges *int) {
 	v := vertex - 1
 	n := neighbor - 1
 
+	if m.G[v][n] == 1 {
+		return
+	}
+
 	m.G[v][n] = 1
 	m.G[n][v] = 1
+
+	*edges++
 }
 
 func (matrix *Matrix) Neighbors(vertex int) *node.Node {

@@ -5,7 +5,7 @@ import (
 	"github.com/mhscardoso/goraphs/sort"
 )
 
-func GetInfo(g Graph) (int, int, int, int, float32, float32) {
+func GetInfo(g Graph) (int, int, int, int, float32, float32, []int) {
 	vertices := g.N()
 	edges := g.M()
 
@@ -28,7 +28,7 @@ func GetInfo(g Graph) (int, int, int, int, float32, float32) {
 		middle = float32(edgesVector[vertices/2]) / 2
 	}
 
-	return vertices, edges, edgesVector[0], edgesVector[vertices-1], median, middle
+	return vertices, edges, edgesVector[0], edgesVector[vertices-1], median, middle, edgesVector
 }
 
 func GetDegree(g Graph, vertex int) int {
