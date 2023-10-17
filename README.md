@@ -49,16 +49,23 @@ Você perceberá que não existem executáveis no repositório, afinal, se outro
 
 **OBS2:** Se você for utilizar <em>**Matrizes de Adjacência**</em> FAÇA AS CONTAS!!! O Go não rodará o programa para matrizes muito grandes. Como base de comparação entre minha máquina e os grafos disponibilizados, a partir do grafo 5 em uma máquina com 12GB de memória RAM, a chamada que cria a matriz dá <em>panic</em> (mais sobre isso [aqui](https://go.dev/doc/effective_go#panic)).
 
-Para utilizar as bibliotecas em algum arquivo de teste (.go) você pode importar as bibliotecas que têm o nome das estruturas de dados utilizadas para lidar com grafos: <em>list</em> e <em>matrix</em>. Para importar, você pode fazer:
+Para utilizar as bibliotecas em algum arquivo de teste (.go) você pode importar a biblioteca <em>graphs</em> e escolher
+um de seus métodos de criação:
+- List
+- Matrix
+
+Para utilizá-las basta escolher os métodos e ler o arquivo de entrada.
 
 ```{go}
 // Importando como uma matriz de adjacência
 import (
-    "github.com/mhscardoso/matrix"
+    "github.com/mhscardoso/graphs"
 )
 
 func main() {
-    A, err := matrix.CreateMatrix("filename.txt")
+    A := graphs.Matrix()
+
+    graphs.ReadFile(A, "filename.txt")
 }
 ```
 
@@ -67,13 +74,17 @@ ou
 ```{go}
 // Importando como uma lista de adjacência
 import (
-    "github.com/mhscardoso/list"
+    "github.com/mhscardoso/graphs"
 )
 
 func main() {
-    A, err := list.CreateList("filename.txt")
+    A := graphs.List()
+
+    graphs.ReadFile(A, "filename.txt")
 }
 ```
+
+Repare que a função para ler o arquivo é a mesma, a qual recebe ou uma lista ou uma matriz. (Pode receber os dois tipos).
 
 Geralmente, para teste, utilizava o **<em>main.go</em>**, que é um arquivo na raiz do projeto, para testar as funcionalidades e importar funções.
 
@@ -83,8 +94,8 @@ Estando com seu arquivo com os testes feitos, suponhamos que seja **<em>main.go<
 
 ```
 - goraphs
-    - list
-    - matrix
+    - alist
+    - amatrix
     - ...
     - main.go
 ```
@@ -92,7 +103,7 @@ Estando com seu arquivo com os testes feitos, suponhamos que seja **<em>main.go<
 e com o PATH do seu sistema operacional preparado para chamar o compilador do terminal, basta fazer:
 
 ```[bash]
-go build main.c
+go build main.go
 ```
 
 ficando com
