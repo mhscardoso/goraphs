@@ -1,9 +1,9 @@
 package graphs
 
 import (
-	"github.com/mhscardoso/goraphs/alist"
-	"github.com/mhscardoso/goraphs/amatrix"
 	"github.com/mhscardoso/goraphs/node"
+	"github.com/mhscardoso/goraphs/src/alist"
+	"github.com/mhscardoso/goraphs/src/amatrix"
 )
 
 type Graph interface {

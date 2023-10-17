@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/mhscardoso/goraphs/graphs"
+	"github.com/mhscardoso/goraphs/src/graphs"
 )
 
 func main() {
