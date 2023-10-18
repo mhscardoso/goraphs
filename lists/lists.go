@@ -6,17 +6,17 @@ import (
 	"github.com/mhscardoso/goraphs/node"
 )
 
-type Lists struct {
-	First  *node.Node
-	Last   *node.Node
+type Lists[T interface{}] struct {
+	First  *node.Node[T]
+	Last   *node.Node[T]
 	Length int
 }
 
-func (l Lists) Top() *node.Node {
+func (l Lists[T]) Top() *node.Node[T] {
 	return l.First
 }
 
-func (l *Lists) Remove() *node.Node {
+func (l *Lists[T]) Remove() *node.Node[T] {
 	removed := l.First
 
 	if l.Last == l.First {
@@ -32,7 +32,7 @@ func (l *Lists) Remove() *node.Node {
 	return removed
 }
 
-func (l Lists) See() {
+func (l Lists[T]) See() {
 	for e := l.First; e != nil; e = e.Next {
 		fmt.Printf("%v\n", e.Vertex)
 	}

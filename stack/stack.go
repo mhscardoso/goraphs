@@ -7,16 +7,16 @@ import (
 	"github.com/mhscardoso/goraphs/node"
 )
 
-type Stack struct {
-	lists.Lists
+type Stack[T interface{}] struct {
+	lists.Lists[T]
 }
 
-func New() *Stack {
-	s := new(Stack)
+func New[T interface{}]() *Stack[T] {
+	s := new(Stack[T])
 	return s
 }
 
-func (s *Stack) Insert(vertex int) *node.Node {
+func (s *Stack[T]) Insert(vertex T) *node.Node[T] {
 	newNode := node.NewNode(vertex)
 	if newNode == nil {
 		fmt.Printf("Cannot allocate new node\n")

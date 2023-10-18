@@ -7,12 +7,14 @@ import (
 )
 
 func main() {
-	A := graphs.List()
+	A := graphs.Matrix()
 
 	fmt.Printf("Lendo Grafo do Disco...\n")
-	graphs.ReadFile(A, "../grafos/grafo_3.txt")
+	graphs.ReadFile(A, "../grafos/grafo_2.txt")
 
 	fmt.Printf("Grafo Lido\n")
 
-	graphs.GetInfo(A)
+	c := graphs.ConectedComponents(A)
+
+	c.See()
 }

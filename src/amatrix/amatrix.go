@@ -40,15 +40,15 @@ func (m *Matrix) Relate(vertex, neighbor int, edges *int) {
 	*edges++
 }
 
-func (matrix *Matrix) Neighbors(vertex int) *node.Node {
+func (matrix *Matrix) Neighbors(vertex int) *node.Node[int] {
 	vertices := matrix.Vertices
-	var first *node.Node = nil
+	var first *node.Node[int] = nil
 
 	next := first
 
 	for i := vertices - 1; i >= 0; i-- {
 		if matrix.G[vertex][i] == 1 {
-			first = new(node.Node)
+			first = new(node.Node[int])
 			first.Vertex = i
 			first.Next = next
 			next = first

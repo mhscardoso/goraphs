@@ -7,7 +7,7 @@ import (
 )
 
 type Graph interface {
-	Neighbors(vertex int) *node.Node
+	Neighbors(vertex int) *node.Node[int]
 	Relate(vertex, neighbor int, edges *int)
 	Allocate(vertices int)
 	UpdateEdges(edges int)

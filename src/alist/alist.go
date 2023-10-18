@@ -7,21 +7,21 @@ import (
 )
 
 type List struct {
-	Vector   []*node.Node
+	Vector   []*node.Node[int]
 	Vertices int
 	Edges    int
 }
 
 // Allocate memory enough for a list
 func (l *List) Allocate(vertices int) {
-	vector := make([]*node.Node, vertices)
+	vector := make([]*node.Node[int], vertices)
 
 	l.Vector = vector
 	l.Vertices = vertices
 }
 
-func (l *List) AddNeighbor(vertex, neighbor int) *node.Node {
-	newNeighbor := new(node.Node)
+func (l *List) AddNeighbor(vertex, neighbor int) *node.Node[int] {
+	newNeighbor := new(node.Node[int])
 	newNeighbor.Vertex = neighbor
 	newNeighbor.Next = l.Vector[vertex]
 
@@ -69,7 +69,7 @@ func (l *List) UpdateEdges(edges int) {
 }
 
 // Return all neighbors of list
-func (l *List) Neighbors(vertex int) *node.Node {
+func (l *List) Neighbors(vertex int) *node.Node[int] {
 	return l.Vector[vertex]
 }
 

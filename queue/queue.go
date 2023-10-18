@@ -7,16 +7,16 @@ import (
 	"github.com/mhscardoso/goraphs/node"
 )
 
-type Queue struct {
-	lists.Lists
+type Queue[T interface{}] struct {
+	lists.Lists[T]
 }
 
-func New() *Queue {
-	q := new(Queue)
+func New[T interface{}]() *Queue[T] {
+	q := new(Queue[T])
 	return q
 }
 
-func (q *Queue) Insert(vertex int) *node.Node {
+func (q *Queue[T]) Insert(vertex T) *node.Node[T] {
 	newNode := node.NewNode(vertex)
 	if newNode == nil {
 		fmt.Printf("Cannot allocate new node\n")

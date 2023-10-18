@@ -1,30 +1,29 @@
-package graphs_test
+package graphs
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
 	"time"
-
-	"github.com/mhscardoso/goraphs/graphs"
 )
 
 // Corretor, edite estas variáveis para que possa ler os arquivos corretos!
 var filenames = []string{
-	"../../grafos/grafo_1.txt",
-	"../../grafos/grafo_2.txt",
-	"../../grafos/grafo_3.txt",
-	"../../grafos/grafo_4.txt",
-	"../../grafos/grafo_5.txt",
-	"../../grafos/grafo_6.txt",
+	"../../../grafos/grafo_1.txt",
+	"../../../grafos/grafo_2.txt",
+	"../../../grafos/grafo_3.txt",
+	"../../../grafos/grafo_4.txt",
+	"../../../grafos/grafo_5.txt",
+	"../../../grafos/grafo_6.txt",
 }
 
 func TestListCreate(t *testing.T) {
 	for _, name := range filenames {
 		fmt.Printf("Criando Lista de Adjacências para %v\n", name)
-		A := graphs.List()
+		A := List()
 
 		t1 := time.Now()
-		graphs.ReadFile(A, name)
+		ReadFile(A, name)
 
 		t2 := time.Now()
 
@@ -36,11 +35,25 @@ func TestListCreate(t *testing.T) {
 	}
 }
 
-func TestListEdges(t *testing.T) {
+func TestListStatsBFS(t *testing.T) {
 	for _, name := range filenames {
 		fmt.Printf("Criando Lista de Adjacências para %v\n", name)
-		A := graphs.List()
+		A := List()
+		ReadFile(A, name)
 
-		graphs.GetInfo(A)
+		fmt.Printf("Grafo lido como lista\n")
+
+		var times float64 = 0
+		s := rand.Intn(A.Vertices)
+
+		for i := 0; i < 100; i++ {
+			t1 := time.Now()
+			BFS(A, s, nil)
+			t2 := time.Now()
+
+			times += t2.Sub(t1).Seconds()
+		}
+
+		fmt.Printf("Tempo médio da BFS para %v: %v\n\n", name, times/100)
 	}
 }

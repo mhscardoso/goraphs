@@ -1,12 +1,12 @@
 package node
 
-type Node struct {
-	Vertex int
-	Next   *Node
+type Node[T interface{}] struct {
+	Vertex T
+	Next   *Node[T]
 }
 
-func NewNode(vertex int) *Node {
-	n := &Node{Vertex: vertex, Next: nil}
+func NewNode[T interface{}](vertex T) *Node[T] {
+	n := &Node[T]{Vertex: vertex, Next: nil}
 
 	return n
 }

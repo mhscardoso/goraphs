@@ -43,21 +43,30 @@ func GetDegree(g Graph, vertex int) int {
 	return degree
 }
 
-func ConectedComponents(g Graph) ([]*queue.Queue, int) {
+func ConectedComponents(g Graph) *queue.Queue[*queue.Queue[int]] {
 	vertices := g.N()
 
-	components := make([]*queue.Queue, vertices)
-	component := 0
-	signal := make([]byte, vertices)
+	components := new(queue.Queue[*queue.Queue[int]])
+	signalAll := make([]byte, vertices)
+	signals := make([]byte, vertices)
 
 	for i := 0; i < vertices; i++ {
-		if signal[i] == 1 {
+		if signalAll[i] == 1 {
 			continue
 		}
 
-		component++
-		_, _, components[component-1] = BFS(g, i+1, &signal)
+		components.Insert(new(queue.Queue[int])) // Add in Last
+
+		BFS(g, i+1, &signals)
+
+		for p := range signals {
+			if signals[p] == 1 {
+				components.Last.Vertex.Insert(p + 1)
+				signalAll[p] = 1
+			}
+			signals[p] = 0
+		}
 	}
 
-	return components[:component], component
+	return components
 }

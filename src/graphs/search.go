@@ -6,18 +6,21 @@ import (
 )
 
 // Executes the BFS
-func BFS(g Graph, s int, know_signals *[]byte) ([]int, []uint, *queue.Queue) {
+func BFS(g Graph, s int, know_signals *[]byte) ([]int, []uint) {
 	vertices := g.N()
 
 	if s <= 0 || s > vertices {
-		return nil, nil, nil
+		return nil, nil
 	}
 
+	var signal *[]byte
+
 	// Signal to mark a vertex when discovered
-	signal := know_signals
-	if signal == nil {
+	if know_signals == nil {
 		signals := make([]byte, vertices)
 		signal = &signals
+	} else {
+		signal = know_signals
 	}
 
 	// parent[i] = j == vertex j is parent of i in BFS tree
@@ -30,16 +33,11 @@ func BFS(g Graph, s int, know_signals *[]byte) ([]int, []uint, *queue.Queue) {
 	vertex := s - 1
 
 	// Start a Queue
-	Q := queue.New()
-
-	// Storing the component in a Queue
-	component := queue.New()
+	Q := queue.New[int]()
 
 	// Mark given vertex and insert in queue
 	(*signal)[vertex] = 1
 	Q.Insert(vertex)
-
-	component.Insert(vertex + 1)
 
 	// For each vertex in queue; While queue not empty
 	// It remeves a vertex in each iteration
@@ -58,13 +56,11 @@ func BFS(g Graph, s int, know_signals *[]byte) ([]int, []uint, *queue.Queue) {
 				Q.Insert(w.Vertex)                     // Insert in queue
 				parent[w.Vertex] = exploring + 1       // Save its parent
 				level[w.Vertex] = level_exploring_plus // Save its level
-
-				component.Insert(w.Vertex + 1) // Save vertex in the graph component
 			}
 		}
 	}
 
-	return parent, level, component
+	return parent, level
 }
 
 // Executes the DFS
@@ -93,7 +89,7 @@ func DFS(g Graph, s int, know_signals *[]byte) ([]int, []uint) {
 	level := make([]uint, vertices)
 
 	// Start a new stack and inserts the vertex in it
-	P := stack.New()
+	P := stack.New[int]()
 	P.Insert(vertex)
 
 	// While P is not empty
