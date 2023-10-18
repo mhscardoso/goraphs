@@ -6,21 +6,25 @@ import (
 )
 
 // Executes the BFS
-func BFS(g Graph, s int, know_signals *[]byte) ([]int, []uint) {
+func BFS(g Graph, s int, known_signals *[]byte) ([]int, []uint) {
 	vertices := g.N()
 
+	if len(*known_signals) != vertices {
+		panic("The Known Signals length must have the same number of vertices\n")
+	}
+
 	if s <= 0 || s > vertices {
-		return nil, nil
+		panic("S must be in the interval (1, vertices)\n")
 	}
 
 	var signal *[]byte
 
 	// Signal to mark a vertex when discovered
-	if know_signals == nil {
+	if known_signals == nil {
 		signals := make([]byte, vertices)
 		signal = &signals
 	} else {
-		signal = know_signals
+		signal = known_signals
 	}
 
 	// parent[i] = j == vertex j is parent of i in BFS tree
@@ -64,11 +68,15 @@ func BFS(g Graph, s int, know_signals *[]byte) ([]int, []uint) {
 }
 
 // Executes the DFS
-func DFS(g Graph, s int, know_signals *[]byte) ([]int, []uint) {
+func DFS(g Graph, s int, known_signals *[]byte) ([]int, []uint) {
 	vertices := g.N()
 
+	if len(*known_signals) != vertices {
+		panic("The Known Signals length must have the same number of vertices\n")
+	}
+
 	if s <= 0 || s > vertices {
-		return nil, nil
+		panic("S must be in the interval (1, vertices)\n")
 	}
 
 	// Working from 0 to N-1
@@ -76,7 +84,7 @@ func DFS(g Graph, s int, know_signals *[]byte) ([]int, []uint) {
 
 	// To mark a vertex
 	// Signal to mark a vertex when discovered
-	signal := know_signals
+	signal := known_signals
 	if signal == nil {
 		signals := make([]byte, vertices)
 		signal = &signals
