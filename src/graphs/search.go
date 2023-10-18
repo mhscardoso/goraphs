@@ -1,20 +1,35 @@
 package graphs
 
 import (
+	"fmt"
+
 	"github.com/mhscardoso/goraphs/queue"
 	"github.com/mhscardoso/goraphs/stack"
 )
 
-// Executes the BFS
-func BFS(g Graph, s int, known_signals *[]byte) ([]int, []uint) {
+/* Executes the BFS:
+ * g             Graph	    --	The graph (alist or amatrix)
+ * s             int	    --	Root vertex
+ * d             int	    -- 	Last vertex (0 for complete BFS)
+ * known_signals *[]byte	--	Once known signals (explored vertex) of old BFS execution
+ *
+ * This function implements the BFS algorithm for a graph
+ * like adjacency list or matrix. If you want to stop the execution
+ * at some vertex, pass it in (d)
+ */
+func BFS(g Graph, s int, d int, known_signals *[]byte) (parent []int, level []uint) {
 	vertices := g.N()
 
-	if len(*known_signals) != vertices {
+	if known_signals != nil && len(*known_signals) != vertices {
 		panic("The Known Signals length must have the same number of vertices\n")
 	}
 
-	if s <= 0 || s > vertices {
-		panic("S must be in the interval (1, vertices)\n")
+	if s == d || s <= 0 || s > vertices || d < 0 || d > vertices {
+		panic(`
+S must be in the interval (1, vertices)
+S and D must be differents
+D must be in the interval (0, vertices)
+`)
 	}
 
 	var signal *[]byte
@@ -28,10 +43,10 @@ func BFS(g Graph, s int, known_signals *[]byte) ([]int, []uint) {
 	}
 
 	// parent[i] = j == vertex j is parent of i in BFS tree
-	parent := make([]int, vertices)
+	parent = make([]int, vertices)
 
 	// Level of vertices in tree of BFS
-	level := make([]uint, vertices)
+	level = make([]uint, vertices)
 
 	// Dealing with vertices between 0 -- N-1
 	vertex := s - 1
@@ -60,15 +75,19 @@ func BFS(g Graph, s int, known_signals *[]byte) ([]int, []uint) {
 				Q.Insert(w.Vertex)                     // Insert in queue
 				parent[w.Vertex] = exploring + 1       // Save its parent
 				level[w.Vertex] = level_exploring_plus // Save its level
+
+				if w == nil {
+					fmt.Printf("haha\n")
+				}
 			}
 		}
 	}
 
-	return parent, level
+	return
 }
 
 // Executes the DFS
-func DFS(g Graph, s int, known_signals *[]byte) ([]int, []uint) {
+func DFS(g Graph, s int, known_signals *[]byte) (parent []int, level []uint) {
 	vertices := g.N()
 
 	if len(*known_signals) != vertices {
@@ -91,10 +110,10 @@ func DFS(g Graph, s int, known_signals *[]byte) ([]int, []uint) {
 	}
 
 	// Parent os vertices in DFS
-	parent := make([]int, vertices)
+	parent = make([]int, vertices)
 
 	// Level of vertices in DFS
-	level := make([]uint, vertices)
+	level = make([]uint, vertices)
 
 	// Start a new stack and inserts the vertex in it
 	P := stack.New[int]()
@@ -121,5 +140,14 @@ func DFS(g Graph, s int, known_signals *[]byte) ([]int, []uint) {
 		}
 	}
 
-	return parent, level
+	return
+}
+
+func Distance(g Graph, s int, d int) int {
+	_, level := BFS(g, s, d, nil)
+	if level[d-1] == 0 {
+		return -1
+	}
+
+	return int(level[d-1])
 }

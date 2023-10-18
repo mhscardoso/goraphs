@@ -48,7 +48,7 @@ func TestListStatsBFS(t *testing.T) {
 
 		for i := 0; i < 100; i++ {
 			t1 := time.Now()
-			BFS(A, s, nil)
+			BFS(A, s, 0, nil)
 			t2 := time.Now()
 
 			times += t2.Sub(t1).Seconds()

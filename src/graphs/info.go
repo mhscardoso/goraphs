@@ -5,9 +5,9 @@ import (
 	"github.com/mhscardoso/goraphs/sort"
 )
 
-func GetInfo(g Graph) (int, int, int, int, float32, float32, []int) {
-	vertices := g.N()
-	edges := g.M()
+func GetInfo(g Graph) (vertices int, edges int, lowest int, greatest int, median float32, middle float32) {
+	vertices = g.N()
+	edges = g.M()
 
 	edgesVector := make([]int, vertices)
 	var sum float32 = 0
@@ -16,11 +16,9 @@ func GetInfo(g Graph) (int, int, int, int, float32, float32, []int) {
 		sum += float32(edgesVector[i])
 	}
 
-	median := sum / float32(vertices)
+	median = sum / float32(vertices)
 
 	sort.Sort(&edgesVector)
-
-	var middle float32
 
 	if vertices%2 == 0 {
 		middle = (float32(edgesVector[vertices/2]) + float32(edgesVector[(vertices/2)-1])) / 2
@@ -28,7 +26,10 @@ func GetInfo(g Graph) (int, int, int, int, float32, float32, []int) {
 		middle = float32(edgesVector[vertices/2]) / 2
 	}
 
-	return vertices, edges, edgesVector[0], edgesVector[vertices-1], median, middle, edgesVector
+	lowest = edgesVector[0]
+	greatest = edgesVector[vertices-1]
+
+	return
 }
 
 func GetDegree(g Graph, vertex int) int {
@@ -57,7 +58,7 @@ func ConectedComponents(g Graph) *queue.Queue[*queue.Queue[int]] {
 
 		components.Insert(new(queue.Queue[int])) // Add in Last
 
-		BFS(g, i+1, &signals)
+		BFS(g, i+1, 0, &signals)
 
 		for p := range signals {
 			if signals[p] == 1 {
