@@ -3,7 +3,7 @@ package amatrix
 import (
 	"fmt"
 
-	"github.com/mhscardoso/goraphs/node"
+	"github.com/mhscardoso/goraphs/set"
 )
 
 type Matrix struct {
@@ -40,22 +40,16 @@ func (m *Matrix) Relate(vertex, neighbor int, edges *int) {
 	*edges++
 }
 
-func (matrix *Matrix) Neighbors(vertex int) *node.Node[int] {
-	vertices := matrix.Vertices
-	var first *node.Node[int] = nil
+func (matrix *Matrix) Neighbors(vertex int) set.Set[int] {
+	s := make(set.Set[int])
 
-	next := first
-
-	for i := vertices - 1; i >= 0; i-- {
+	for i := range matrix.G[vertex] {
 		if matrix.G[vertex][i] == 1 {
-			first = new(node.Node[int])
-			first.Vertex = i
-			first.Next = next
-			next = first
+			s.Add(i)
 		}
 	}
 
-	return first
+	return s
 }
 
 func (matrix *Matrix) UpdateEdges(edges int) {

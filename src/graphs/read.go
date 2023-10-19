@@ -45,12 +45,12 @@ func ReadFile(g Graph, filename string) error {
 
 		vertex, err := strconv.Atoi(v_p)
 		if err != nil {
-			return err
+			panic(err)
 		}
 
 		neighbor, err := strconv.Atoi(v_n)
 		if err != nil {
-			return err
+			panic(err)
 		}
 
 		g.Relate(vertex, neighbor, &m)

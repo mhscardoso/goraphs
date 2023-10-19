@@ -3,45 +3,25 @@ package alist
 import (
 	"fmt"
 
-	"github.com/mhscardoso/goraphs/node"
+	"github.com/mhscardoso/goraphs/set"
 )
 
 type List struct {
-	Vector   []*node.Node[int]
+	Vector   []set.Set[int]
 	Vertices int
 	Edges    int
 }
 
 // Allocate memory enough for a list
 func (l *List) Allocate(vertices int) {
-	vector := make([]*node.Node[int], vertices)
+	vector := make([]set.Set[int], vertices)
+
+	for i := range vector {
+		vector[i] = make(set.Set[int])
+	}
 
 	l.Vector = vector
 	l.Vertices = vertices
-}
-
-func (l *List) AddNeighbor(vertex, neighbor int) *node.Node[int] {
-	newNeighbor := new(node.Node[int])
-	newNeighbor.Vertex = neighbor
-	newNeighbor.Next = l.Vector[vertex]
-
-	l.Vector[vertex] = newNeighbor
-
-	return newNeighbor
-}
-
-/* Just checks if a given vertex v already
- * has a neighbor n. Return true case not.
- */
-func (l *List) CheckNeighbors(vertex, neighbor int) bool {
-	n := l.Neighbors(vertex)
-	for ; n != nil; n = n.Next {
-		if n.Vertex == neighbor {
-			return false
-		}
-	}
-
-	return true
 }
 
 /* Relate two vertices called vertex and neighbor
@@ -52,12 +32,12 @@ func (l *List) Relate(vertex, neighbor int, edges *int) {
 	v := vertex - 1
 	n := neighbor - 1
 
-	if !l.CheckNeighbors(v, n) || v == n {
+	if v == n || l.Vector[v].Contains(n) {
 		return
 	}
 
-	l.AddNeighbor(v, n)
-	l.AddNeighbor(n, v)
+	l.Vector[v].Add(n)
+	l.Vector[n].Add(v)
 
 	*edges++
 }
@@ -69,7 +49,7 @@ func (l *List) UpdateEdges(edges int) {
 }
 
 // Return all neighbors of list
-func (l *List) Neighbors(vertex int) *node.Node[int] {
+func (l *List) Neighbors(vertex int) set.Set[int] {
 	return l.Vector[vertex]
 }
 
@@ -87,8 +67,8 @@ func (l *List) See() {
 	for i, v := range l.Vector {
 		fmt.Printf("V: %v -- ", i+1)
 
-		for e := v; e != nil; e = e.Next {
-			fmt.Printf("%v  ,  ", e.Vertex+1)
+		for e := range v {
+			fmt.Printf("%v  ,  ", e+1)
 		}
 
 		fmt.Printf("\n")

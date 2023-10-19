@@ -1,8 +1,6 @@
 package graphs
 
 import (
-	"fmt"
-
 	"github.com/mhscardoso/goraphs/queue"
 	"github.com/mhscardoso/goraphs/stack"
 )
@@ -69,15 +67,15 @@ D must be in the interval (0, vertices)
 		neighbors := g.Neighbors(exploring)
 
 		// For each neighbor of vertex
-		for w := neighbors; w != nil; w = w.Next {
-			if (*signal)[w.Vertex] == 0 {
-				(*signal)[w.Vertex] = 1                // Mark vertex
-				Q.Insert(w.Vertex)                     // Insert in queue
-				parent[w.Vertex] = exploring + 1       // Save its parent
-				level[w.Vertex] = level_exploring_plus // Save its level
+		for w := range neighbors {
+			if (*signal)[w] == 0 {
+				(*signal)[w] = 1                // Mark vertex
+				Q.Insert(w)                     // Insert in queue
+				parent[w] = exploring + 1       // Save its parent
+				level[w] = level_exploring_plus // Save its level
 
-				if w == nil {
-					fmt.Printf("haha\n")
+				if w == d {
+					return
 				}
 			}
 		}
@@ -90,7 +88,7 @@ D must be in the interval (0, vertices)
 func DFS(g Graph, s int, known_signals *[]byte) (parent []int, level []uint) {
 	vertices := g.N()
 
-	if len(*known_signals) != vertices {
+	if known_signals != nil && len(*known_signals) != vertices {
 		panic("The Known Signals length must have the same number of vertices\n")
 	}
 
@@ -129,12 +127,12 @@ func DFS(g Graph, s int, known_signals *[]byte) (parent []int, level []uint) {
 
 			neighbors := g.Neighbors(exploring)
 
-			for w := neighbors; w != nil; w = w.Next {
-				P.Insert(w.Vertex) // Inserts neighbor in stack
+			for w := range neighbors {
+				P.Insert(w) // Inserts neighbor in stack
 
-				if w.Vertex != vertex && parent[w.Vertex] == 0 {
-					parent[w.Vertex] = exploring + 1 // Save parent
-					level[w.Vertex] = level_plus_one // Save level
+				if w != vertex && parent[w] == 0 {
+					parent[w] = exploring + 1 // Save parent
+					level[w] = level_plus_one // Save level
 				}
 			}
 		}
