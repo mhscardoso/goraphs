@@ -36,3 +36,32 @@ func (s Set[K]) See() {
 	}
 	fmt.Printf("\n\n")
 }
+
+/*
+ * Implementations for set specificaly to deal
+ * weigth graphs.
+ */
+
+// The set type for graphs with weigths
+type SetW[K comparable] map[K]float64
+
+func NewW[K comparable]() SetW[K] {
+	s := SetW[K]{}
+	return s
+}
+
+func (s SetW[K]) Add(e K, w float64) {
+	s[e] = w
+}
+
+func (s SetW[K]) Contains(e K) bool {
+	_, ok := s[e]
+	return ok
+}
+
+func (s SetW[K]) Remove(e K) {
+	if !s.Contains(e) {
+		return
+	}
+	delete(s, e)
+}

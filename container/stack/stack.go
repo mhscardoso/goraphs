@@ -3,8 +3,8 @@ package stack
 import (
 	"fmt"
 
-	"github.com/mhscardoso/goraphs/lists"
-	"github.com/mhscardoso/goraphs/node"
+	"github.com/mhscardoso/goraphs/container/lists"
+	"github.com/mhscardoso/goraphs/container/node"
 )
 
 type Stack[T interface{}] struct {

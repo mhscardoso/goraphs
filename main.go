@@ -10,7 +10,7 @@ func main() {
 	A := graphs.List()
 
 	fmt.Printf("Lendo Grafo do Disco...\n")
-	graphs.ReadFile(A, "../grafos/grafo_6.txt")
+	graphs.ReadFile(A, "../grafos/TP1/grafo_6.txt")
 
 	fmt.Printf("Grafo Lido\n")
 

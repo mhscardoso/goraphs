@@ -3,7 +3,7 @@ package amatrix
 import (
 	"fmt"
 
-	"github.com/mhscardoso/goraphs/set"
+	"github.com/mhscardoso/goraphs/container/set"
 )
 
 type Matrix struct {

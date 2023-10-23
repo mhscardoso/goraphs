@@ -9,12 +9,12 @@ import (
 
 // Corretor, edite estas variáveis para que possa ler os arquivos corretos!
 var filenames = []string{
-	"../../../grafos/grafo_1.txt",
-	"../../../grafos/grafo_2.txt",
-	"../../../grafos/grafo_3.txt",
-	"../../../grafos/grafo_4.txt",
-	"../../../grafos/grafo_5.txt",
-	"../../../grafos/grafo_6.txt",
+	"../../../grafos/TP1/grafo_1.txt",
+	"../../../grafos/TP1/grafo_2.txt",
+	"../../../grafos/TP1/grafo_3.txt",
+	"../../../grafos/TP1/grafo_4.txt",
+	"../../../grafos/TP1/grafo_5.txt",
+	"../../../grafos/TP1/grafo_6.txt",
 }
 
 func TestListCreate(t *testing.T) {

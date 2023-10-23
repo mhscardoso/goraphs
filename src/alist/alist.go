@@ -3,7 +3,7 @@ package alist
 import (
 	"fmt"
 
-	"github.com/mhscardoso/goraphs/set"
+	"github.com/mhscardoso/goraphs/container/set"
 )
 
 type List struct {

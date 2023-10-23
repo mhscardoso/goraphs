@@ -1,8 +1,8 @@
 package graphs
 
 import (
-	"github.com/mhscardoso/goraphs/queue"
-	"github.com/mhscardoso/goraphs/stack"
+	"github.com/mhscardoso/goraphs/container/queue"
+	"github.com/mhscardoso/goraphs/container/stack"
 )
 
 /* Executes the BFS:

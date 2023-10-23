@@ -1,10 +1,8 @@
 package graphs
 
 import (
-	"fmt"
-
-	"github.com/mhscardoso/goraphs/queue"
-	//"github.com/mhscardoso/goraphs/sort"
+	"github.com/mhscardoso/goraphs/container/queue"
+	"github.com/mhscardoso/goraphs/sort"
 )
 
 func GetInfo(g Graph) (vertices int, edges int, lowest int, greatest int, median float32, middle float32) {
@@ -18,11 +16,9 @@ func GetInfo(g Graph) (vertices int, edges int, lowest int, greatest int, median
 		sum += edgesVector[i]
 	}
 
-	fmt.Printf("Sum: %v\nEdges: %v\nEdges2: %v\nValidate: %v\n", int(sum), edges, edges*2, sum == 2*edges)
-
 	median = float32(sum) / float32(vertices)
 
-	//sort.Sort(&edgesVector)
+	sort.Sort(&edgesVector)
 
 	if vertices%2 == 0 {
 		middle = (float32(edgesVector[vertices/2]) + float32(edgesVector[(vertices/2)-1])) / 2

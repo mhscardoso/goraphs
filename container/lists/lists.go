@@ -3,7 +3,7 @@ package lists
 import (
 	"fmt"
 
-	"github.com/mhscardoso/goraphs/node"
+	"github.com/mhscardoso/goraphs/container/node"
 )
 
 type Lists[T interface{}] struct {

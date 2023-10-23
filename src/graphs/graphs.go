@@ -1,7 +1,7 @@
 package graphs
 
 import (
-	"github.com/mhscardoso/goraphs/set"
+	"github.com/mhscardoso/goraphs/container/set"
 	"github.com/mhscardoso/goraphs/src/alist"
 	"github.com/mhscardoso/goraphs/src/amatrix"
 )

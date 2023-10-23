@@ -1,7 +1,7 @@
 package sort
 
 import (
-	"github.com/mhscardoso/goraphs/stack"
+	"github.com/mhscardoso/goraphs/container/stack"
 )
 
 func Sort(arr *[]int) {
