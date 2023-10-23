@@ -2,6 +2,12 @@
 
 printf("olá, mundo\n");
 
+# Atenção, corretor - TP2!
+
+Este aviso foi agora mais acima para avisar que este branch está em "manutenção" devido a segunda parte do trabalho.
+É provável que façamos melhoras nas partes anteriores, mas alguns erros podem ser gerados pois nada está pronto
+até (23/10/2023).
+
 # Atenção, corretor!
 
 Para fazer os estudos de caso, utilizamos os testes unitários do Go. Para utilizá-los, você pode entrar nas pastas com testes, (alist e amatrix) via terminal fazendo
