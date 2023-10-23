@@ -3,20 +3,16 @@ package main
 import (
 	"fmt"
 
-	//"github.com/mhscardoso/goraphs/matrix"
-	"github.com/mhscardoso/goraphs/list"
+	"github.com/mhscardoso/goraphs/src/graphs"
 )
 
 func main() {
+	A := graphs.List()
 
-	fmt.Printf("Lendo o Grafo do disco...\n")
+	fmt.Printf("Lendo Grafo do Disco...\n")
+	graphs.ReadFile(A, "../grafos/grafo_6.txt")
 
-	A, err := list.CreateList("../grafos/grafo_6.txt", list.AddInOrder)
-	if err != nil {
-		panic(err)
-	}
+	fmt.Printf("Grafo Lido\n")
 
-	measure := A.StatsDFS()
-	fmt.Printf("Tempo medio: %v\n", measure)
-
+	graphs.GetInfo(A)
 }

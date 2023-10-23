@@ -1,68 +1,36 @@
 package stack
 
-import "fmt"
+import (
+	"fmt"
 
-type Node struct {
-	Vertex int
-	Back   *Node
+	"github.com/mhscardoso/goraphs/lists"
+	"github.com/mhscardoso/goraphs/node"
+)
+
+type Stack[T interface{}] struct {
+	lists.Lists[T]
 }
 
-type Stack struct {
-	Last  *Node
-	First *Node
-}
-
-func New() *Stack {
-	s := new(Stack)
-	s.First = nil
-	s.Last = s.First
-
+func New[T interface{}]() *Stack[T] {
+	s := new(Stack[T])
 	return s
 }
 
-func (s *Stack) Insert(vertex int) *Node {
-	if s.Last == nil {
-		first := new(Node)
-
-		first.Vertex = vertex
-		first.Back = nil
-
-		s.First = first
-		s.Last = first
-
-		return first
+func (s *Stack[T]) Insert(vertex T) *node.Node[T] {
+	newNode := node.NewNode(vertex)
+	if newNode == nil {
+		fmt.Printf("Cannot allocate new node\n")
+		return nil
 	}
 
-	top := s.First
+	if s.First == nil {
+		s.First = newNode
+		s.Last = newNode
+	} else {
+		newNode.Next = s.First
+		s.First = newNode
+	}
 
-	newNode := new(Node)
-	newNode.Vertex = vertex
-	newNode.Back = top
-
-	s.First = newNode
-
+	s.Length++
 	return newNode
-}
-
-func (s *Stack) Remove() *Node {
-	removed := s.First
-	if s.Last == s.First {
-		s.First = nil
-		s.Last = nil
-
-		return removed
-	}
-
-	s.First = removed.Back
-	return removed
-}
-
-func (s *Stack) See() {
-	for e := s.First; e != nil; e = e.Back {
-		fmt.Printf("%v\n", e.Vertex)
-	}
-}
-
-func (s *Stack) Top() *Node {
-	return s.First
 }
