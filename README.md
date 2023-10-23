@@ -4,16 +4,10 @@ printf("olá, mundo\n");
 
 # Atenção, corretor!
 
-Para fazer os estudos de caso, utilizamos os testes unitários do Go. Para utilizá-los, você pode entrar nas pastas com testes, (list e matrix) via terminal fazendo
+Para fazer os estudos de caso, utilizamos os testes unitários do Go. Para utilizá-los, você pode entrar nas pastas com testes, (alist e amatrix) via terminal fazendo
 
 ```
-cd list
-```
-
-ou 
-
-```
-cd matrix
+cd src/graphs
 ```
 
 e rodar todos os testes, fazendo
