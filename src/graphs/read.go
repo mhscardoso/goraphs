@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func ReadFile(g Graph, filename string) error {
@@ -18,7 +19,7 @@ func ReadFile(g Graph, filename string) error {
 	defer readfile.Close()
 
 	fileScanner := bufio.NewScanner(readfile)
-	fileScanner.Split(bufio.ScanWords)
+	fileScanner.Split(bufio.ScanLines)
 
 	// Number of Vertices
 	// This is the first line in file
@@ -31,32 +32,69 @@ func ReadFile(g Graph, filename string) error {
 		return err
 	}
 
+	// Reading second line to check what
+	// type of graph it is
+	var fn func([]string) (int, int, float32)
+
+	fileScanner.Scan()
+	ln := fileScanner.Text()
+
+	sl := strings.Split(ln, " ")
+	if len(sl) == 3 {
+		fn = Read3
+	} else {
+		fn = Read2
+	}
+
 	// Allocating Memory
 	g.Allocate(n)
 
 	// Numeber of edges
 	m := 0
 
-	for fileScanner.Scan() {
-		v_p := fileScanner.Text()
+	for {
+		vertex, neighbor, weigth := fn(sl)
 
-		fileScanner.Scan()
-		v_n := fileScanner.Text()
+		g.Relate(vertex, neighbor, weigth, &m)
 
-		vertex, err := strconv.Atoi(v_p)
-		if err != nil {
-			panic(err)
+		if !fileScanner.Scan() {
+			break
 		}
 
-		neighbor, err := strconv.Atoi(v_n)
-		if err != nil {
-			panic(err)
-		}
-
-		g.Relate(vertex, neighbor, &m)
+		ln = fileScanner.Text()
+		sl = strings.Split(ln, " ")
 	}
 
 	g.UpdateEdges(m)
 
 	return nil
+}
+
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func Read3(slc []string) (int, int, float32) {
+	v, err := strconv.Atoi(slc[0])
+	check(err)
+
+	n, err := strconv.Atoi(slc[1])
+	check(err)
+
+	p, err := strconv.ParseFloat(slc[2], 32)
+	check(err)
+
+	return v, n, float32(p)
+}
+
+func Read2(slc []string) (int, int, float32) {
+	v, err := strconv.Atoi(slc[0])
+	check(err)
+
+	n, err := strconv.Atoi(slc[1])
+	check(err)
+
+	return v, n, 0
 }

@@ -7,12 +7,14 @@ import (
 )
 
 func main() {
-	A := graphs.List()
+	A := graphs.WList()
 
 	fmt.Printf("Lendo Grafo do Disco...\n")
-	graphs.ReadFile(A, "../grafos/TP1/grafo_6.txt")
+	graphs.ReadFile(A, "testw.txt")
 
 	fmt.Printf("Grafo Lido\n")
 
 	graphs.GetInfo(A)
+
+	A.See()
 }

@@ -2,6 +2,7 @@ package graphs
 
 import (
 	"github.com/mhscardoso/goraphs/container/queue"
+	"github.com/mhscardoso/goraphs/container/set"
 	"github.com/mhscardoso/goraphs/container/stack"
 )
 
@@ -23,11 +24,7 @@ func BFS(g Graph, s int, d int, known_signals *[]byte) (parent []int, level []ui
 	}
 
 	if s == d || s <= 0 || s > vertices || d < 0 || d > vertices {
-		panic(`
-S must be in the interval (1, vertices)
-S and D must be differents
-D must be in the interval (0, vertices)
-`)
+		panic("S must be in the interval (1, vertices)\nS and D must be differents\nD must be in the interval (0, vertices)")
 	}
 
 	var signal *[]byte
@@ -56,6 +53,12 @@ D must be in the interval (0, vertices)
 	(*signal)[vertex] = 1
 	Q.Insert(vertex)
 
+	// If the graph has weigths it fails here
+	neighbors, ok := g.Neighbors(vertex).(set.Set[int])
+	if !ok {
+		return
+	}
+
 	// For each vertex in queue; While queue not empty
 	// It remeves a vertex in each iteration
 	for e := Q.Remove(); e != nil; e = Q.Remove() {
@@ -64,7 +67,7 @@ D must be in the interval (0, vertices)
 		exploring := e.Vertex
 		level_exploring_plus := level[exploring] + 1
 
-		neighbors := g.Neighbors(exploring)
+		neighbors = g.Neighbors(exploring).(set.Set[int])
 
 		// For each neighbor of vertex
 		for w := range neighbors {
@@ -74,7 +77,7 @@ D must be in the interval (0, vertices)
 				parent[w] = exploring + 1       // Save its parent
 				level[w] = level_exploring_plus // Save its level
 
-				if w == d {
+				if w+1 == d {
 					return
 				}
 			}
@@ -117,6 +120,12 @@ func DFS(g Graph, s int, known_signals *[]byte) (parent []int, level []uint) {
 	P := stack.New[int]()
 	P.Insert(vertex)
 
+	// If the graph has weigths it fails here
+	neighbors, ok := g.Neighbors(vertex).(set.Set[int])
+	if !ok {
+		return
+	}
+
 	// While P is not empty
 	for e := P.Remove(); e != nil; e = P.Remove() {
 		exploring := e.Vertex
@@ -125,7 +134,7 @@ func DFS(g Graph, s int, known_signals *[]byte) (parent []int, level []uint) {
 		if (*signal)[exploring] == 0 {
 			(*signal)[exploring] = 1
 
-			neighbors := g.Neighbors(exploring)
+			neighbors = g.Neighbors(exploring).(set.Set[int])
 
 			for w := range neighbors {
 				P.Insert(w) // Inserts neighbor in stack

@@ -1,4 +1,4 @@
-package alist
+package awlists
 
 import (
 	"fmt"
@@ -6,18 +6,18 @@ import (
 	"github.com/mhscardoso/goraphs/container/set"
 )
 
-type List struct {
-	Vector   []set.Set[int]
+type WList struct {
+	Vector   []set.SetW[int]
 	Vertices int
 	Edges    int
 }
 
 // Allocate memory enough for a list
-func (l *List) Allocate(vertices int) {
-	vector := make([]set.Set[int], vertices)
+func (l *WList) Allocate(vertices int) {
+	vector := make([]set.SetW[int], vertices)
 
 	for i := range vector {
-		vector[i] = make(set.Set[int])
+		vector[i] = make(set.SetW[int])
 	}
 
 	l.Vector = vector
@@ -26,9 +26,9 @@ func (l *List) Allocate(vertices int) {
 
 /* Relate two vertices called vertex and neighbor
  * checking if that neighbor was already inserted
- * in the given vertex.
+ * in the given vertex and weigth.
  */
-func (l *List) Relate(vertex, neighbor int, weigth float32, edges *int) {
+func (l *WList) Relate(vertex, neighbor int, weigth float32, edges *int) {
 	v := vertex - 1
 	n := neighbor - 1
 
@@ -36,39 +36,39 @@ func (l *List) Relate(vertex, neighbor int, weigth float32, edges *int) {
 		return
 	}
 
-	l.Vector[v].Add(n)
-	l.Vector[n].Add(v)
+	l.Vector[v].Add(n, weigth)
+	l.Vector[n].Add(v, weigth)
 
 	*edges++
 }
 
 // Update number of edges of list while
 // Read the file
-func (l *List) UpdateEdges(edges int) {
+func (l *WList) UpdateEdges(edges int) {
 	l.Edges = edges
 }
 
 // Return all neighbors of list
-func (l *List) Neighbors(vertex int) any {
+func (l *WList) Neighbors(vertex int) any {
 	return l.Vector[vertex]
 }
 
 // Getters of fields Vertices and Edges
-func (l List) N() int {
+func (l WList) N() int {
 	return l.Vertices
 }
 
-func (l List) M() int {
+func (l WList) M() int {
 	return l.Edges
 }
 
 // Method to test in smalls graphs
-func (l *List) See() {
+func (l *WList) See() {
 	for i, v := range l.Vector {
 		fmt.Printf("V: %v -- ", i+1)
 
-		for e := range v {
-			fmt.Printf("%v  ,  ", e+1)
+		for k, w := range v {
+			fmt.Printf("%v: %v,  ", k+1, w)
 		}
 
 		fmt.Printf("\n")

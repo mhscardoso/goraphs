@@ -22,7 +22,7 @@ func (matrix *Matrix) Allocate(vertices int) {
 	}
 }
 
-func (m *Matrix) Relate(vertex, neighbor int, edges *int) {
+func (m *Matrix) Relate(vertex, neighbor int, weigth float32, edges *int) {
 	if vertex == neighbor {
 		return
 	}
@@ -40,7 +40,7 @@ func (m *Matrix) Relate(vertex, neighbor int, edges *int) {
 	*edges++
 }
 
-func (matrix *Matrix) Neighbors(vertex int) set.Set[int] {
+func (matrix *Matrix) Neighbors(vertex int) any {
 	s := make(set.Set[int])
 
 	for i := range matrix.G[vertex] {

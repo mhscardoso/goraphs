@@ -1,14 +1,15 @@
 package graphs
 
 import (
-	"github.com/mhscardoso/goraphs/container/set"
 	"github.com/mhscardoso/goraphs/src/alist"
 	"github.com/mhscardoso/goraphs/src/amatrix"
+	"github.com/mhscardoso/goraphs/src/awlists"
+	"github.com/mhscardoso/goraphs/src/awmatrix"
 )
 
 type Graph interface {
-	Neighbors(vertex int) set.Set[int]
-	Relate(vertex, neighbor int, edges *int)
+	Neighbors(vertex int) any
+	Relate(vertex, neighbor int, weigth float32, edges *int)
 	Allocate(vertices int)
 	UpdateEdges(edges int)
 	See()
@@ -23,4 +24,13 @@ func List() *alist.List {
 
 func Matrix() *amatrix.Matrix {
 	return new(amatrix.Matrix)
+}
+
+// Constructors for graphs with weigths
+func WList() *awlists.WList {
+	return new(awlists.WList)
+}
+
+func WMatrix() *awmatrix.WMatrix {
+	return new(awmatrix.WMatrix)
 }

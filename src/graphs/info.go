@@ -1,8 +1,11 @@
 package graphs
 
 import (
+	"fmt"
+
 	"github.com/mhscardoso/goraphs/container/queue"
-	"github.com/mhscardoso/goraphs/sort"
+	"github.com/mhscardoso/goraphs/container/set"
+	//"github.com/mhscardoso/goraphs/sort"
 )
 
 func GetInfo(g Graph) (vertices int, edges int, lowest int, greatest int, median float32, middle float32) {
@@ -18,7 +21,10 @@ func GetInfo(g Graph) (vertices int, edges int, lowest int, greatest int, median
 
 	median = float32(sum) / float32(vertices)
 
-	sort.Sort(&edgesVector)
+	fmt.Printf("Vertices: %v\nEdgesx2: %v\nSum: %v\nValidate: %v\n",
+		vertices, 2*edges, sum, sum == 2*edges)
+
+	//sort.Sort(&edgesVector)
 
 	if vertices%2 == 0 {
 		middle = (float32(edgesVector[vertices/2]) + float32(edgesVector[(vertices/2)-1])) / 2
@@ -33,9 +39,16 @@ func GetInfo(g Graph) (vertices int, edges int, lowest int, greatest int, median
 }
 
 func GetDegree(g Graph, vertex int) int {
-	neighbors := g.Neighbors(vertex)
+	var n1 set.Set[int]
+	var n2 set.SetW[int]
 
-	return len(neighbors)
+	n1, ok := g.Neighbors(vertex).(set.Set[int])
+	if !ok || n1 == nil {
+		n2 = g.Neighbors(vertex).(set.SetW[int])
+		return len(n2)
+	}
+
+	return len(n1)
 }
 
 func ConectedComponents(g Graph) *queue.Queue[*queue.Queue[int]] {

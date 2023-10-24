@@ -43,14 +43,14 @@ func (s Set[K]) See() {
  */
 
 // The set type for graphs with weigths
-type SetW[K comparable] map[K]float64
+type SetW[K comparable] map[K]float32
 
 func NewW[K comparable]() SetW[K] {
 	s := SetW[K]{}
 	return s
 }
 
-func (s SetW[K]) Add(e K, w float64) {
+func (s SetW[K]) Add(e K, w float32) {
 	s[e] = w
 }
 
