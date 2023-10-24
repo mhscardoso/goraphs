@@ -7,14 +7,16 @@ import (
 )
 
 func main() {
-	A := graphs.WList()
+	A := graphs.WMatrix()
 
 	fmt.Printf("Lendo Grafo do Disco...\n")
-	graphs.ReadFile(A, "testw.txt")
+	graphs.ReadFile(A, "../grafos/TP2/grafo_W_1.txt")
 
 	fmt.Printf("Grafo Lido\n")
 
-	graphs.GetInfo(A)
+	// graphs.GetInfo(A)
 
-	A.See()
+	// A.See()
+
+	graphs.Dijkstra(A, 3)
 }
