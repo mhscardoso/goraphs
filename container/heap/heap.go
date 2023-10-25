@@ -9,16 +9,23 @@ type E struct {
 // vector (or slice of int)
 // in this case.
 type Heap struct {
-	Vector []E
-	Size   int
+	Position []int
+	Vector   []E
+	Size     int
 }
 
 func New(capacity int) *Heap {
 	heap := new(Heap)
 
 	vector := make([]E, 0, capacity)
+	pos := make([]int, capacity)
+	// for i := range pos {
+	// 	pos[i] = -1
+	// }
 
 	heap.Vector = vector
+	heap.Position = pos
+
 	heap.Size = 0
 
 	return heap
@@ -49,6 +56,8 @@ func (h Heap) RightChild(n int) float64 {
 
 func (h *Heap) Swap(i, j int) {
 	h.Vector[i], h.Vector[j] = h.Vector[j], h.Vector[i]
+	h.Position[h.Vector[i].vertex] = j
+	h.Position[h.Vector[j].vertex] = i
 }
 
 func (h *Heap) siftDown(current, destiny int) {
@@ -91,6 +100,7 @@ func (h *Heap) siftUp() {
 
 func (h *Heap) Insert(vertex int, distance float64) {
 	h.Vector = append(h.Vector, E{vertex: vertex, distance: distance})
+	h.Position[vertex] = h.Size
 	h.Size++
 	h.siftUp()
 }
