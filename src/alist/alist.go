@@ -28,7 +28,7 @@ func (l *List) Allocate(vertices int) {
  * checking if that neighbor was already inserted
  * in the given vertex.
  */
-func (l *List) Relate(vertex, neighbor int, weigth float32, edges *int) {
+func (l *List) Relate(vertex, neighbor int, weigth float64, edges *int) {
 	v := vertex - 1
 	n := neighbor - 1
 

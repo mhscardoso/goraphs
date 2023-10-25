@@ -9,7 +9,7 @@ import (
 
 type Graph interface {
 	Neighbors(vertex int) any
-	Relate(vertex, neighbor int, weigth float32, edges *int)
+	Relate(vertex, neighbor int, weigth float64, edges *int)
 	Allocate(vertices int)
 	UpdateEdges(edges int)
 	See()

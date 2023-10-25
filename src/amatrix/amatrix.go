@@ -22,7 +22,7 @@ func (matrix *Matrix) Allocate(vertices int) {
 	}
 }
 
-func (m *Matrix) Relate(vertex, neighbor int, weigth float32, edges *int) {
+func (m *Matrix) Relate(vertex, neighbor int, weigth float64, edges *int) {
 	if vertex == neighbor {
 		return
 	}

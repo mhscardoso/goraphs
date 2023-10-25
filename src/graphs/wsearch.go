@@ -8,8 +8,8 @@ import (
 	"github.com/mhscardoso/goraphs/container/set"
 )
 
-func MinDist(S set.Set[int], distances []float32) (int, float32) {
-	var min float32 = float32(math.Inf(1))
+func MinDist(S set.Set[int], distances []float64) (int, float64) {
+	var min float64 = math.Inf(1)
 	var u int
 
 	for k := range S {
@@ -22,7 +22,7 @@ func MinDist(S set.Set[int], distances []float32) (int, float32) {
 	return u, min
 }
 
-func Dijkstra(g Graph, s int) []float32 {
+func Dijkstra(g Graph, s int) []float64 {
 	vertex := s - 1
 
 	if s <= 0 || s > g.N() {
@@ -35,9 +35,9 @@ func Dijkstra(g Graph, s int) []float32 {
 		S.Add(i)
 	}
 
-	distances := make([]float32, g.N())
+	distances := make([]float64, g.N())
 	for i := range distances {
-		distances[i] = float32(math.Inf(1))
+		distances[i] = math.Inf(1)
 	}
 
 	distances[vertex] = 0

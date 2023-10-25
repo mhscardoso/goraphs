@@ -22,7 +22,7 @@ func (matrix *WMatrix) Allocate(vertices int) {
 	}
 }
 
-func (m *WMatrix) Relate(vertex, neighbor int, weigth float32, edges *int) {
+func (m *WMatrix) Relate(vertex, neighbor int, weigth float64, edges *int) {
 	if vertex == neighbor {
 		return
 	}
@@ -34,8 +34,8 @@ func (m *WMatrix) Relate(vertex, neighbor int, weigth float32, edges *int) {
 		return
 	}
 
-	m.G[v][n] = weigth
-	m.G[n][v] = weigth
+	m.G[v][n] = float32(weigth)
+	m.G[n][v] = float32(weigth)
 
 	*edges++
 }
@@ -45,7 +45,7 @@ func (matrix *WMatrix) Neighbors(vertex int) any {
 
 	for i := range matrix.G[vertex] {
 		if matrix.G[vertex][i] != 0 {
-			s.Add(i, matrix.G[vertex][i])
+			s.Add(i, float64(matrix.G[vertex][i]))
 		}
 	}
 

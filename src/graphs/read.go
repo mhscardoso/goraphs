@@ -34,7 +34,7 @@ func ReadFile(g Graph, filename string) error {
 
 	// Reading second line to check what
 	// type of graph it is
-	var fn func([]string) (int, int, float32)
+	var fn func([]string) (int, int, float64)
 
 	fileScanner.Scan()
 	ln := fileScanner.Text()
@@ -76,7 +76,7 @@ func check(err error) {
 	}
 }
 
-func Read3(slc []string) (int, int, float32) {
+func Read3(slc []string) (int, int, float64) {
 	v, err := strconv.Atoi(slc[0])
 	check(err)
 
@@ -86,10 +86,10 @@ func Read3(slc []string) (int, int, float32) {
 	p, err := strconv.ParseFloat(slc[2], 32)
 	check(err)
 
-	return v, n, float32(p)
+	return v, n, p
 }
 
-func Read2(slc []string) (int, int, float32) {
+func Read2(slc []string) (int, int, float64) {
 	v, err := strconv.Atoi(slc[0])
 	check(err)
 
