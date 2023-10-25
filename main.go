@@ -28,19 +28,19 @@ func main() {
 
 	fmt.Printf("%v\n\n", h)
 
-	h.Remove()
+	h.Update(5, 2)
 
-	fmt.Printf("%v\n", h)
+	fmt.Printf("%v\n\n", h)
 
-	h.Remove()
+	h.Update(6, 1)
 
-	fmt.Printf("%v\n", h)
+	fmt.Printf("%v\n\n", h)
 
-	h.Remove()
+	h.Update(4, 20)
 
-	fmt.Printf("%v\n", h)
+	fmt.Printf("%v\n\n", h)
 
-	h.Remove()
+	h.Update(1, 5)
 
-	fmt.Printf("%v\n", h)
+	fmt.Printf("%v\n\n", h)
 }

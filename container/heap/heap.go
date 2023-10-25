@@ -1,8 +1,8 @@
 package heap
 
 type E struct {
-	distance float64
 	vertex   int
+	distance float64
 }
 
 // Min Heap implemented as a
@@ -87,8 +87,8 @@ func (h *Heap) siftDown(current, destiny int) {
 	}
 }
 
-func (h *Heap) siftUp() {
-	current := h.Size - 1
+func (h *Heap) siftUp(i int) {
+	current := i
 	parent := ParentIndex(current)
 	for current > 0 && h.Vector[current].distance < h.Vector[parent].distance {
 		h.Swap(current, parent)
@@ -101,7 +101,7 @@ func (h *Heap) Insert(vertex int, distance float64) {
 	h.Vector = append(h.Vector, E{vertex: vertex, distance: distance})
 	h.Position[vertex] = h.Size
 	h.Size++
-	h.siftUp()
+	h.siftUp(h.Size - 1)
 }
 
 func (h *Heap) Remove() E {
@@ -117,5 +117,25 @@ func (h *Heap) Remove() E {
 	h.siftDown(0, n-1)
 
 	return valueToRemove
+}
 
+func (h *Heap) Update(vertex int, distance float64) {
+	heapPosition := h.Position[vertex]
+
+	// h.Vector[heapPosition].distance = math.Inf(1)
+	// h.siftDown(heapPosition, h.Size-1)
+	// if h.Vector[h.Size-1].distance != math.Inf(1) {
+	// 	h.Swap(h.Size-1, h.Size-2)
+	// }
+	// h.Vector[h.Size-1].distance = distance
+	// h.siftUp()
+
+	old := h.Vector[heapPosition].distance
+	h.Vector[heapPosition].distance = distance
+
+	if distance > old {
+		h.siftUp(heapPosition)
+	} else if distance < old {
+		h.siftDown(0, heapPosition)
+	}
 }
