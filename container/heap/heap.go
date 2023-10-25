@@ -56,8 +56,7 @@ func (h Heap) RightChild(n int) float64 {
 
 func (h *Heap) Swap(i, j int) {
 	h.Vector[i], h.Vector[j] = h.Vector[j], h.Vector[i]
-	h.Position[h.Vector[i].vertex] = j
-	h.Position[h.Vector[j].vertex] = i
+	h.Position[h.Vector[i].vertex], h.Position[h.Vector[j].vertex] = h.Position[h.Vector[j].vertex], h.Position[h.Vector[i].vertex]
 }
 
 func (h *Heap) siftDown(current, destiny int) {
