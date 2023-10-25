@@ -19,14 +19,14 @@ func main() {
 	// A.See()
 
 	h := heap.New(10)
-	h.Insert(10, 1)
-	h.Insert(2, 2)
-	h.Insert(7, 3)
-	h.Insert(5, 4)
+	h.Insert(1, 1)
+	h.Insert(2, 3)
+	h.Insert(3, 6)
 	h.Insert(4, 5)
-	h.Insert(8, 6)
+	h.Insert(5, 9)
+	h.Insert(6, 8)
 
-	fmt.Printf("%v\n", h)
+	fmt.Printf("%v\n\n", h)
 
 	h.Remove()
 

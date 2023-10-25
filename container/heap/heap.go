@@ -53,11 +53,11 @@ func (h *Heap) Swap(i, j int) {
 
 func (h *Heap) siftDown(current, destiny int) {
 	leftChild := LeftChildIndex(current)
+	for leftChild <= destiny {
 
-	for h.Vector[leftChild].distance <= h.Vector[destiny].distance {
 		rightChild := RightChildIndex(current)
 
-		if h.Vector[rightChild].distance > h.Vector[destiny].distance {
+		if rightChild > destiny {
 			rightChild = -1
 		}
 
@@ -69,7 +69,7 @@ func (h *Heap) siftDown(current, destiny int) {
 
 		// check if value of swap node is less than the value at currentIdx
 		if h.Vector[idxToSwap].distance < h.Vector[current].distance {
-			h.Swap(idxToSwap, destiny)
+			h.Swap(idxToSwap, current)
 			current = idxToSwap
 			leftChild = LeftChildIndex(current)
 
@@ -103,9 +103,9 @@ func (h *Heap) Remove() E {
 	// pop the last element in the array
 	h.Vector = h.Vector[:n]
 	// call siftDown to update heap ordering
+	h.Size--
 	h.siftDown(0, n-1)
 
-	h.Size--
-
 	return valueToRemove
+
 }
