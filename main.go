@@ -3,48 +3,18 @@ package main
 import (
 	"fmt"
 
-	"github.com/mhscardoso/goraphs/container/heap"
+	"github.com/mhscardoso/goraphs/src/graphs"
 )
 
 func main() {
-	// A := graphs.WList()
+	A := graphs.WList()
 
-	// fmt.Printf("Lendo Grafo do Disco...\n")
-	// graphs.ReadFile(A, "../grafos/TP2/grafo_W_5.txt")
+	fmt.Printf("Lendo Grafo do Disco...\n")
+	graphs.ReadFile(A, "../grafos/TP2/grafo_W_2.txt")
 
-	// fmt.Printf("Grafo Lido\n")
+	fmt.Printf("Grafo Lido\n")
 
-	// graphs.GetInfo(A)
+	res := graphs.Dijkstra(A, 10)
 
-	// A.See()
-
-	h := heap.New(10)
-	h.Insert(1, 11)
-	h.Insert(2, 7)
-	h.Insert(3, 3)
-	h.Insert(4, 5)
-	h.Insert(5, 9)
-	h.Insert(6, 8)
-
-	fmt.Printf("%v\n\n", h)
-
-	h.Update(5, 2)
-
-	fmt.Printf("%v\n\n", h)
-
-	h.Update(6, 1)
-
-	fmt.Printf("%v\n\n", h)
-
-	h.Update(4, 20)
-
-	fmt.Printf("%v\n\n", h)
-
-	h.Update(1, 5)
-
-	fmt.Printf("%v\n\n", h)
-
-	h.Update(4, 1)
-
-	fmt.Printf("%v\n\n", h)
+	graphs.WriteResults("grafo_2.txt", res, 10)
 }

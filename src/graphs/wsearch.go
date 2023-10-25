@@ -1,9 +1,11 @@
 package graphs
 
 import (
-	//"fmt"
 	"fmt"
 	"math"
+	"os"
+
+	//"github.com/mhscardoso/goraphs/container/heap"
 
 	"github.com/mhscardoso/goraphs/container/set"
 )
@@ -58,6 +60,7 @@ func Dijkstra(g Graph, s int) []float64 {
 				fmt.Printf("Negative weigths are not supported\n")
 				return nil
 			}
+
 			if distances[k] > distances[u]+v {
 				distances[k] = distances[u] + v
 			}
@@ -65,4 +68,19 @@ func Dijkstra(g Graph, s int) []float64 {
 	}
 
 	return distances
+}
+
+func WriteResults(filename string, results []float64, root int) {
+	f, err := os.Create(filename)
+	if err != nil {
+		return
+	}
+
+	defer f.Close()
+
+	f.WriteString(fmt.Sprintf("%v\n", root))
+
+	for i := range results {
+		f.WriteString(fmt.Sprintf("%v - %0.2f\n", i+1, results[i]))
+	}
 }
