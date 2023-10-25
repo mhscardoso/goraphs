@@ -43,4 +43,8 @@ func main() {
 	h.Update(1, 5)
 
 	fmt.Printf("%v\n\n", h)
+
+	h.Update(4, 1)
+
+	fmt.Printf("%v\n\n", h)
 }

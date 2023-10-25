@@ -133,9 +133,9 @@ func (h *Heap) Update(vertex int, distance float64) {
 	old := h.Vector[heapPosition].distance
 	h.Vector[heapPosition].distance = distance
 
-	if distance > old {
+	if distance < old {
 		h.siftUp(heapPosition)
-	} else if distance < old {
+	} else if distance > old {
 		h.siftDown(0, heapPosition)
 	}
 }
