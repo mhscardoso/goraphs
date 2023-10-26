@@ -34,3 +34,21 @@ func WList() *awlists.WList {
 func WMatrix() *awmatrix.WMatrix {
 	return new(awmatrix.WMatrix)
 }
+
+func MyWay(parents []int, vertex int) []int {
+	if vertex < 1 || vertex >= len(parents) {
+		return nil
+	}
+
+	way := make([]int, 0, len(parents))
+
+	way = append(way, vertex)
+
+	parent := parents[vertex-1]
+	for parent != 0 {
+		way = append(way, parent)
+		parent = parents[parent-1]
+	}
+
+	return way
+}

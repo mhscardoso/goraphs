@@ -1,5 +1,7 @@
 package heap
 
+import "math"
+
 type E struct {
 	Vertex   int
 	Distance float64
@@ -17,16 +19,21 @@ type Heap struct {
 func New(capacity int) *Heap {
 	heap := new(Heap)
 
-	vector := make([]E, 0, capacity)
+	vector := make([]E, capacity)
+	for i := range vector {
+		vector[i].Distance = math.Inf(1)
+		vector[i].Vertex = i
+	}
+
 	pos := make([]int, capacity)
 	for i := range pos {
-		pos[i] = -1
+		pos[i] = i
 	}
 
 	heap.Vector = vector
 	heap.Position = pos
 
-	heap.Size = 0
+	heap.Size = capacity
 
 	return heap
 }

@@ -2,6 +2,7 @@ package graphs
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/mhscardoso/goraphs/container/queue"
 	"github.com/mhscardoso/goraphs/container/set"
@@ -63,6 +64,8 @@ func ConectedComponents(g Graph) *queue.Queue[*queue.Queue[int]] {
 			continue
 		}
 
+		fmt.Printf("Vertex: %v\n", i+1)
+
 		components.Insert(new(queue.Queue[int])) // Add in Last
 
 		BFS(g, i+1, 0, &signals)
@@ -77,4 +80,22 @@ func ConectedComponents(g Graph) *queue.Queue[*queue.Queue[int]] {
 	}
 
 	return components
+}
+
+func WriteConnected(filename string, results *queue.Queue[*queue.Queue[int]]) {
+	f, err := os.Create(filename)
+	if err != nil {
+		return
+	}
+
+	defer f.Close()
+
+	for e := results.First; e != nil; e = e.Next {
+		f.WriteString(fmt.Sprintf("%v\n", e.Vertex.Length))
+
+		for q := e.Vertex.First; q != nil; q = q.Next {
+			f.WriteString(fmt.Sprintf("%v\n", q.Vertex))
+		}
+		f.WriteString("---------------------------------------------------------------------------------\n")
+	}
 }
