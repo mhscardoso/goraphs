@@ -12,13 +12,13 @@ var filenamesw = []string{
 	// "../../../grafos/TP2/grafo_W_1.txt",
 	// "../../../grafos/TP2/grafo_W_2.txt",
 	// "../../../grafos/TP2/grafo_W_3.txt",
-	// "../../../grafos/TP2/grafo_W_4.txt",
+	"../../../grafos/TP2/grafo_W_4.txt",
 	// "../../../grafos/TP2/grafo_W_5.txt",
 }
 
 var filenamerede = []string{
-	"../../../grafos/rede_colaboracao.txt",
-	"../../../grafos/rede_colaboracao_vertices.txt",
+	"../../../grafos/TP2/rede_colaboracao.txt",
+	"../../../grafos/TP2/rede_colaboracao_vertices.txt",
 }
 
 func TestDistancesDKT(t *testing.T) {
@@ -74,7 +74,7 @@ func TestTimesDKTHeap(t *testing.T) {
 }
 
 func TestTimesDKTVector(t *testing.T) {
-	I := 20
+	I := 1
 
 	for _, name := range filenamesw {
 		A := WList()
@@ -103,7 +103,9 @@ func TestDistancesDKTRede(t *testing.T) {
 	mapVertexName, mapNameVertex := ReadFileNet(filenamerede[1])
 
 	start := mapNameVertex["Edsger W. Dijkstra"]
-	names := []string{"Alan M. Turing", "J. B. Kruskal", "Jon M.Kleinberg", "Eva Tardos", "Daniel R. Figueiredo"}
+	// Problema com nome da pequena Eva!!!
+	eva_number := 11386
+	names := []string{"Alan M. Turing", "J. B. Kruskal", "Jon M. Kleinberg", mapVertexName[eva_number], "Daniel R. Figueiredo"}
 	names_vertex := []int{0, 0, 0, 0, 0}
 	for i, name := range names {
 		names_vertex[i] = mapNameVertex[name]
@@ -116,7 +118,7 @@ func TestDistancesDKTRede(t *testing.T) {
 
 	t1 := time.Now()
 
-	fmt.Printf("Strart %v\n", start)
+	fmt.Printf("Start: %v\n", start)
 	dists, parent := DijkstraHeap(A, start)
 
 	t2 := time.Now()

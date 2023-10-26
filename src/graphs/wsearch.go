@@ -83,6 +83,9 @@ func DijkstraHeap(g Graph, s int) (dist []float64, parents []int) {
 	parents = make([]int, g.N())
 
 	dist = make([]float64, g.N())
+	for i := range dist {
+		dist[i] = math.Inf(1)
+	}
 
 	// Actually, this is V-S Set
 	S := make(set.Set[int])
