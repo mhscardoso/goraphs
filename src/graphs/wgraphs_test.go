@@ -9,11 +9,16 @@ import (
 
 // Corretor, edite estas variáveis para que possa ler os arquivos corretos!
 var filenamesw = []string{
-	"../../../grafos/TP2/grafo_W_1.txt",
-	"../../../grafos/TP2/grafo_W_2.txt",
-	"../../../grafos/TP2/grafo_W_3.txt",
+	// "../../../grafos/TP2/grafo_W_1.txt",
+	// "../../../grafos/TP2/grafo_W_2.txt",
+	// "../../../grafos/TP2/grafo_W_3.txt",
 	// "../../../grafos/TP2/grafo_W_4.txt",
 	// "../../../grafos/TP2/grafo_W_5.txt",
+}
+
+var filenamerede = []string{
+	"../../../grafos/rede_colaboracao.txt",
+	"../../../grafos/rede_colaboracao_vertices.txt",
 }
 
 func TestDistancesDKT(t *testing.T) {
@@ -90,5 +95,41 @@ func TestTimesDKTVector(t *testing.T) {
 		}
 
 		fmt.Printf("DKT Feito para arquivo %v\nUsou: Vetor\nMedia: %v\n", name, t/float64(I))
+	}
+}
+
+func TestDistancesDKTRede(t *testing.T) {
+
+	mapVertexName, mapNameVertex := ReadFileNet(filenamerede[1])
+
+	start := mapNameVertex["Edsger W. Dijkstra"]
+	names := []string{"Alan M. Turing", "J. B. Kruskal", "Jon M.Kleinberg", "Eva Tardos", "Daniel R. Figueiredo"}
+	names_vertex := []int{0, 0, 0, 0, 0}
+	for i, name := range names {
+		names_vertex[i] = mapNameVertex[name]
+	}
+
+	A := WList()
+
+	ReadFile(A, filenamerede[0])
+	fmt.Printf("Grafo Lido\n")
+
+	t1 := time.Now()
+
+	fmt.Printf("Strart %v\n", start)
+	dists, parent := DijkstraHeap(A, start)
+
+	t2 := time.Now()
+
+	time := t2.Sub(t1).Seconds()
+
+	fmt.Printf("DKT Feito para arquivo %v\nUsou: Heap\nLevou %v\n", filenamerede[0], time)
+
+	for _, v := range names_vertex {
+		way := MyWay(parent, v)
+		for _, vertex := range way {
+			fmt.Printf(" %v -", mapVertexName[vertex])
+		}
+		fmt.Printf("Custo: %0.2f\n\n", dists[v-1])
 	}
 }

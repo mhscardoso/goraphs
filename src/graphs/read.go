@@ -98,3 +98,40 @@ func Read2(slc []string) (int, int, float64) {
 
 	return v, n, 0
 }
+
+func ReadFileNet(filename string) (map[int]string, map[string]int) {
+	readfile, err := os.Open(filename)
+
+	if err != nil {
+
+		readfile.Close()
+		return nil, nil
+	}
+
+	// This happens when the function ends
+	defer readfile.Close()
+
+	fileScanner := bufio.NewScanner(readfile)
+	fileScanner.Split(bufio.ScanLines)
+
+	mapIntString := make(map[int]string)
+	mapStringInt := make(map[string]int)
+
+	for fileScanner.Scan() {
+		ln := fileScanner.Text()
+
+		sl := strings.Split(ln, ",")
+
+		vertex, err := strconv.Atoi(sl[0])
+
+		if err != nil {
+			return nil, nil
+		}
+		name := sl[1]
+
+		mapIntString[vertex] = name
+		mapStringInt[name] = vertex
+
+	}
+	return mapIntString, mapStringInt
+}
