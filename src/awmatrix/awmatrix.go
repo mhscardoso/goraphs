@@ -10,6 +10,7 @@ type WMatrix struct {
 	G        [][]float32
 	Vertices int
 	Edges    int
+	Targeted bool
 }
 
 func (matrix *WMatrix) Allocate(vertices int) {
@@ -35,7 +36,10 @@ func (m *WMatrix) Relate(vertex, neighbor int, weigth float64, edges *int) {
 	}
 
 	m.G[v][n] = float32(weigth)
-	m.G[n][v] = float32(weigth)
+
+	if !m.Targeted {
+		m.G[n][v] = float32(weigth)
+	}
 
 	*edges++
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/mhscardoso/goraphs/src/amatrix"
 	"github.com/mhscardoso/goraphs/src/awlists"
 	"github.com/mhscardoso/goraphs/src/awmatrix"
+	"github.com/mhscardoso/goraphs/src/flist"
 )
 
 type Graph interface {
@@ -18,21 +19,41 @@ type Graph interface {
 }
 
 // Constructors
-func List() *alist.List {
-	return new(alist.List)
+func List(targeted bool) *alist.List {
+	initial := new(alist.List)
+	initial.Targeted = targeted
+
+	return initial
 }
 
-func Matrix() *amatrix.Matrix {
-	return new(amatrix.Matrix)
+func Matrix(targeted bool) *amatrix.Matrix {
+	initial := new(amatrix.Matrix)
+	initial.Targeted = targeted
+
+	return initial
 }
 
 // Constructors for graphs with weigths
-func WList() *awlists.WList {
-	return new(awlists.WList)
+func WList(targeted bool) *awlists.WList {
+	initial := new(awlists.WList)
+	initial.Targeted = targeted
+
+	return initial
 }
 
-func WMatrix() *awmatrix.WMatrix {
-	return new(awmatrix.WMatrix)
+func WMatrix(targeted bool) *awmatrix.WMatrix {
+	initial := new(awmatrix.WMatrix)
+	initial.Targeted = targeted
+
+	return initial
+}
+
+// Constructor for FList
+func FList(targeted bool) *flist.FList {
+	initial := new(flist.FList)
+	initial.Targeted = targeted
+
+	return initial
 }
 
 func MyWay(parents []int, vertex int) []int {

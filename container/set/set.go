@@ -65,3 +65,44 @@ func (s SetW[K]) Remove(e K) {
 	}
 	delete(s, e)
 }
+
+type waf [2]float64
+
+func (w *waf) SetWaf(weigth float64, flow float64) {
+	w[0] = weigth
+	w[1] = flow
+}
+
+func (w *waf) GetWeigth() float64 {
+	return w[0]
+}
+
+func (w *waf) GetFlow() float64 {
+	return w[1]
+}
+
+type SetF map[uint32]waf
+
+func NewF() SetF {
+	s := SetF{}
+	return s
+}
+
+func (s SetF) Add(e uint32, w float64, f float64) {
+	var data waf
+	data.SetWaf(w, f)
+
+	s[e] = data
+}
+
+func (s SetF) Contains(e uint32) bool {
+	_, ok := s[e]
+	return ok
+}
+
+func (s SetF) Remove(e uint32) {
+	if !s.Contains(e) {
+		return
+	}
+	delete(s, e)
+}

@@ -10,6 +10,7 @@ type Matrix struct {
 	G        [][]byte
 	Vertices int
 	Edges    int
+	Targeted bool
 }
 
 func (matrix *Matrix) Allocate(vertices int) {
@@ -30,12 +31,10 @@ func (m *Matrix) Relate(vertex, neighbor int, weigth float64, edges *int) {
 	v := vertex - 1
 	n := neighbor - 1
 
-	if m.G[v][n] == 1 {
-		return
-	}
-
 	m.G[v][n] = 1
-	m.G[n][v] = 1
+	if !m.Targeted {
+		m.G[n][v] = 1
+	}
 
 	*edges++
 }

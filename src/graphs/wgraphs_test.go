@@ -24,7 +24,7 @@ var filenamerede = []string{
 func TestDistancesDKT(t *testing.T) {
 	vertices := []int{20, 30, 40, 50, 60}
 	for _, name := range filenamesw {
-		A := WList()
+		A := WList(false)
 
 		ReadFile(A, name)
 		fmt.Printf("Grafo Lido\n")
@@ -50,7 +50,7 @@ func TestTimesDKTHeap(t *testing.T) {
 	I := 10
 
 	for _, name := range filenamesw {
-		A := WList()
+		A := WList(false)
 
 		ReadFile(A, name)
 		fmt.Printf("Grafo Lido\n")
@@ -77,7 +77,7 @@ func TestTimesDKTVector(t *testing.T) {
 	I := 1
 
 	for _, name := range filenamesw {
-		A := WList()
+		A := WList(false)
 
 		ReadFile(A, name)
 		fmt.Printf("Grafo Lido\n")
@@ -111,7 +111,7 @@ func TestDistancesDKTRede(t *testing.T) {
 		names_vertex[i] = mapNameVertex[name]
 	}
 
-	A := WList()
+	A := WList(false)
 
 	ReadFile(A, filenamerede[0])
 	fmt.Printf("Grafo Lido\n")

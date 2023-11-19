@@ -26,7 +26,7 @@ func TestCreate(t *testing.T) {
 		// like a matrix or a list.
 		// A := Matrix() -- like Matrix
 		// A := List()   -- like List
-		A := List()
+		A := List(false)
 
 		fmt.Printf("Grafo lido como %v\n", reflect.TypeOf(*A))
 
@@ -52,7 +52,7 @@ func TestStatsBFS(t *testing.T) {
 		// like a matrix or a list.
 		// A := Matrix() -- like Matrix
 		// A := List()   -- like List
-		A := List()
+		A := List(false)
 
 		ReadFile(A, name)
 
@@ -82,7 +82,7 @@ func TestStatsDFS(t *testing.T) {
 		// like a matrix or a list.
 		// A := Matrix() -- like Matrix
 		// A := List()   -- like List
-		A := List()
+		A := List(false)
 
 		ReadFile(A, name)
 
@@ -114,7 +114,7 @@ func TestParents(t *testing.T) {
 		// like a matrix or a list.
 		// A := Matrix() -- like Matrix
 		// A := List()   -- like List
-		A := Matrix()
+		A := Matrix(false)
 
 		ReadFile(A, name)
 
@@ -141,7 +141,7 @@ func TestDistances(t *testing.T) {
 		// like a matrix or a list.
 		// A := Matrix() -- like Matrix
 		// A := List()   -- like List
-		A := List()
+		A := List(false)
 
 		ReadFile(A, name)
 
@@ -165,7 +165,7 @@ func TestConnectedComponents(t *testing.T) {
 		// like a matrix or a list.
 		// A := Matrix() -- like Matrix
 		// A := List()   -- like List
-		A := List()
+		A := List(false)
 
 		ReadFile(A, name)
 

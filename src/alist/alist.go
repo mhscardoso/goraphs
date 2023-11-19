@@ -10,6 +10,7 @@ type List struct {
 	Vector   []set.Set[int]
 	Vertices int
 	Edges    int
+	Targeted bool
 }
 
 // Allocate memory enough for a list
@@ -37,7 +38,10 @@ func (l *List) Relate(vertex, neighbor int, weigth float64, edges *int) {
 	}
 
 	l.Vector[v].Add(n)
-	l.Vector[n].Add(v)
+
+	if !l.Targeted {
+		l.Vector[n].Add(v)
+	}
 
 	*edges++
 }
