@@ -1,13 +1,17 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/mhscardoso/goraphs/src/graphs"
 )
 
 func main() {
 	A := graphs.FList(true)
 
-	graphs.ReadFile(A, "testw.txt")
+	graphs.ReadFile(A, "testf.txt")
 
-	A.See()
+	b := graphs.Bottleneck(A, 1, 3)
+
+	fmt.Printf("%v\n", b)
 }

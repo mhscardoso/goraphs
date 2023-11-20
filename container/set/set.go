@@ -43,41 +43,41 @@ func (s Set[K]) See() {
  */
 
 // The set type for graphs with weigths
-type SetW[K comparable] map[K]float64
+type SetW[K comparable, T float64 | int] map[K]T
 
-func NewW[K comparable]() SetW[K] {
-	s := SetW[K]{}
+func NewW[K comparable, T float64 | int]() SetW[K, T] {
+	s := SetW[K, T]{}
 	return s
 }
 
-func (s SetW[K]) Add(e K, w float64) {
+func (s SetW[K, T]) Add(e K, w T) {
 	s[e] = w
 }
 
-func (s SetW[K]) Contains(e K) bool {
+func (s SetW[K, T]) Contains(e K) bool {
 	_, ok := s[e]
 	return ok
 }
 
-func (s SetW[K]) Remove(e K) {
+func (s SetW[K, T]) Remove(e K) {
 	if !s.Contains(e) {
 		return
 	}
 	delete(s, e)
 }
 
-type waf [2]float64
+type waf [2]int
 
-func (w *waf) SetWaf(weigth float64, flow float64) {
+func (w *waf) SetWaf(weigth int, flow int) {
 	w[0] = weigth
 	w[1] = flow
 }
 
-func (w *waf) GetWeigth() float64 {
+func (w *waf) GetWeigth() int {
 	return w[0]
 }
 
-func (w *waf) GetFlow() float64 {
+func (w *waf) GetFlow() int {
 	return w[1]
 }
 
@@ -88,7 +88,7 @@ func NewF() SetF {
 	return s
 }
 
-func (s SetF) Add(e uint32, w float64, f float64) {
+func (s SetF) Add(e uint32, w int, f int) {
 	var data waf
 	data.SetWaf(w, f)
 

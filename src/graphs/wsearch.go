@@ -45,7 +45,7 @@ func Dijkstra(g Graph, s int) ([]float64, []int) {
 
 	distances[vertex] = 0
 
-	neighbors, ok := g.Neighbors(vertex).(set.SetW[int])
+	neighbors, ok := g.Neighbors(vertex).(set.SetW[int, float64])
 	if !ok {
 		fmt.Printf("Only graphs with weigths supported\n")
 		return nil, nil
@@ -55,7 +55,7 @@ func Dijkstra(g Graph, s int) ([]float64, []int) {
 		u, _ := MinDist(S, distances)
 		S.Remove(u)
 
-		neighbors = g.Neighbors(u).(set.SetW[int])
+		neighbors = g.Neighbors(u).(set.SetW[int, float64])
 
 		for k, v := range neighbors {
 			if v < 0 {
@@ -96,7 +96,7 @@ func DijkstraHeap(g Graph, s int) (dist []float64, parents []int) {
 	distances := heap.New(g.N())
 	distances.Update(vertex, 0)
 
-	neighbors, ok := g.Neighbors(vertex).(set.SetW[int])
+	neighbors, ok := g.Neighbors(vertex).(set.SetW[int, float64])
 	if !ok {
 		fmt.Printf("Only graphs with weigths supported\n")
 		return nil, nil
@@ -107,7 +107,7 @@ func DijkstraHeap(g Graph, s int) (dist []float64, parents []int) {
 		du := u.Distance
 		S.Remove(u.Vertex)
 
-		neighbors = g.Neighbors(u.Vertex).(set.SetW[int])
+		neighbors = g.Neighbors(u.Vertex).(set.SetW[int, float64])
 
 		for k, v := range neighbors {
 			if v < 0 {

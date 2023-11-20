@@ -45,7 +45,7 @@ func (m *WMatrix) Relate(vertex, neighbor int, weigth float64, edges *int) {
 }
 
 func (matrix *WMatrix) Neighbors(vertex int) any {
-	s := make(set.SetW[int])
+	s := make(set.SetW[int, float64])
 
 	for i := range matrix.G[vertex] {
 		if matrix.G[vertex][i] != 0 {

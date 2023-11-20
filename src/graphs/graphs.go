@@ -34,8 +34,8 @@ func Matrix(targeted bool) *amatrix.Matrix {
 }
 
 // Constructors for graphs with weigths
-func WList(targeted bool) *awlists.WList {
-	initial := new(awlists.WList)
+func WList[T float64 | int](targeted bool) *awlists.WList[T] {
+	initial := new(awlists.WList[T])
 	initial.Targeted = targeted
 
 	return initial

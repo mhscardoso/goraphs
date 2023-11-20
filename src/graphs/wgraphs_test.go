@@ -9,10 +9,10 @@ import (
 
 // Corretor, edite estas variáveis para que possa ler os arquivos corretos!
 var filenamesw = []string{
-	// "../../../grafos/TP2/grafo_W_1.txt",
-	// "../../../grafos/TP2/grafo_W_2.txt",
-	// "../../../grafos/TP2/grafo_W_3.txt",
-	"../../../grafos/TP2/grafo_W_4.txt",
+	"../../../grafos/TP2/grafo_W_1.txt",
+	"../../../grafos/TP2/grafo_W_2.txt",
+	"../../../grafos/TP2/grafo_W_3.txt",
+	// "../../../grafos/TP2/grafo_W_4.txt",
 	// "../../../grafos/TP2/grafo_W_5.txt",
 }
 
@@ -24,7 +24,7 @@ var filenamerede = []string{
 func TestDistancesDKT(t *testing.T) {
 	vertices := []int{20, 30, 40, 50, 60}
 	for _, name := range filenamesw {
-		A := WList(false)
+		A := WList[float64](false)
 
 		ReadFile(A, name)
 		fmt.Printf("Grafo Lido\n")
@@ -50,7 +50,7 @@ func TestTimesDKTHeap(t *testing.T) {
 	I := 10
 
 	for _, name := range filenamesw {
-		A := WList(false)
+		A := WList[float64](false)
 
 		ReadFile(A, name)
 		fmt.Printf("Grafo Lido\n")
@@ -77,7 +77,7 @@ func TestTimesDKTVector(t *testing.T) {
 	I := 1
 
 	for _, name := range filenamesw {
-		A := WList(false)
+		A := WList[float64](false)
 
 		ReadFile(A, name)
 		fmt.Printf("Grafo Lido\n")
@@ -111,7 +111,7 @@ func TestDistancesDKTRede(t *testing.T) {
 		names_vertex[i] = mapNameVertex[name]
 	}
 
-	A := WList(false)
+	A := WList[float64](false)
 
 	ReadFile(A, filenamerede[0])
 	fmt.Printf("Grafo Lido\n")

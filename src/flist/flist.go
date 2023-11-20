@@ -34,10 +34,10 @@ func (l *FList) Relate(vertex, neighbor int, weigth float64, edges *int) {
 		return
 	}
 
-	l.Vector[v].Add(uint32(n), weigth, 0)
+	l.Vector[v].Add(uint32(n), int(weigth), 0)
 
 	if !l.Targeted {
-		l.Vector[n].Add(uint32(v), weigth, 0)
+		l.Vector[n].Add(uint32(v), int(weigth), 0)
 	}
 
 	*edges++
@@ -69,7 +69,7 @@ func (l *FList) See() {
 		fmt.Printf("V: %v -- ", i+1)
 
 		for k, w := range v {
-			fmt.Printf("[N: %v: | W: %.2f | F: %v],  ", k+1, w[0], w[1])
+			fmt.Printf("[N: %v: | W: %v | F: %v],  ", k+1, w[0], w[1])
 		}
 
 		fmt.Printf("\n")

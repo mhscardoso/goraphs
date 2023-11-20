@@ -41,11 +41,11 @@ func GetInfo(g Graph) (vertices int, edges int, lowest int, greatest int, median
 
 func GetDegree(g Graph, vertex int) int {
 	var n1 set.Set[int]
-	var n2 set.SetW[int]
+	var n2 set.SetW[int, float64]
 
 	n1, ok := g.Neighbors(vertex).(set.Set[int])
 	if !ok || n1 == nil {
-		n2 = g.Neighbors(vertex).(set.SetW[int])
+		n2 = g.Neighbors(vertex).(set.SetW[int, float64])
 		return len(n2)
 	}
 
