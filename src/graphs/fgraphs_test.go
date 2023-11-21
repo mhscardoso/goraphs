@@ -29,7 +29,7 @@ func TestFord(t *testing.T) {
 			A := FList(true)
 			ReadFile(A, name)
 
-			fmt.Printf("%vº Ford-Fulkerson\n", i+1)
+			fmt.Printf("%vº Ford-Fulkerson - ", i+1)
 
 			t1 := time.Now()
 			FordFulkerson(A, source, target, 2048)
@@ -43,7 +43,7 @@ func TestFord(t *testing.T) {
 				maxFlow += v.GetFlow()
 			}
 
-			fmt.Printf("    Fluxo Máximo entre %v e %v: %v\n", source, target, maxFlow)
+			fmt.Printf("Fluxo Máximo entre %v e %v: %v\n", source, target, maxFlow)
 		}
 
 		fmt.Printf("\nArquivo Lido: %v\n", name)
