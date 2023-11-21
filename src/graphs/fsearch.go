@@ -1,37 +1,89 @@
 package graphs
 
 import (
+	"fmt"
+
 	"github.com/mhscardoso/goraphs/container/queue"
 	"github.com/mhscardoso/goraphs/container/set"
 	"github.com/mhscardoso/goraphs/src/awlists"
 	"github.com/mhscardoso/goraphs/src/flist"
 )
 
-func FordFulkerson(l *flist.FList, s int, t int) {
+func FordFulkerson(l *flist.FList, s int, t int, delta int) {
+	initial_delta := delta
 
+	residual := ResidualGraph(l, initial_delta)
+
+	for {
+		P := MyWay(BFSWeigth(residual, s, t, nil), t)
+
+		//fmt.Printf("Out: %v - %v\n", P, initial_delta)
+
+		for len(P) == 1 && initial_delta >= 1 {
+			initial_delta /= 2
+			if initial_delta == 0 {
+				return
+			}
+			AugmentResidual(l, residual, initial_delta)
+			P = MyWay(BFSWeigth(residual, s, t, nil), t)
+
+			fmt.Printf("In: %v - %v\n", P, initial_delta)
+		}
+
+		b := Augment(l, residual, P)
+		AugmentResidual(l, residual, initial_delta)
+
+		fmt.Printf("Out: %v - %v -- ", P, initial_delta)
+		fmt.Printf("Bottleneck: %v\n", b)
+	}
 }
 
 // Get residual graph given other
-func ResidualGraph(l *flist.FList) *awlists.WList[int] {
+func ResidualGraph(l *flist.FList, delta int) *awlists.WList[int] {
 	// Residual graph is targeted
 	residual := new(awlists.WList[int])
 	residual.Targeted = true
 	residual.Edges = 0
 
+	residual.Allocate(l.Vertices)
+
 	// Iterating over all vertices
-	for i := range l.Vector {
-		for n, v := range l.Vector[i] {
-			residual.Relate(i, int(n), v.GetWeigth(), &residual.Edges)
+	for i, w := range l.Vector {
+		for n, v := range w {
+			if v.GetWeigth()-v.GetFlow() >= delta {
+				residual.Relate(i+1, int(n)+1, v.GetWeigth()-v.GetFlow(), &residual.Edges)
+			}
 		}
 	}
 
 	return residual
 }
 
+func AugmentResidual(l *flist.FList, res *awlists.WList[int], delta int) {
+	// Iterating over all vertices
+	for i, w := range l.Vector {
+		for n, v := range w {
+			if v.GetWeigth()-v.GetFlow() >= delta {
+				res.Vector[i][int(n)] = v.GetWeigth() - v.GetFlow()
+			} else {
+				res.Vector[i].Remove(int(n))
+			}
+
+			if v.GetFlow() >= delta {
+				res.Vector[int(n)][i] = v.GetFlow()
+			} else {
+				res.Vector[n].Remove(i)
+			}
+		}
+	}
+}
+
 /* New BFS written to support
- * graphs with flows.
+ * graphs with integer weigths
+ * -- Calculates a path in the
+ * -- residual graph.
  */
-func BFSFlow(l *flist.FList, s int, d int, known_signals *[]byte) (parent []int, level []uint) {
+func BFSWeigth(l *awlists.WList[int], s int, d int, known_signals *[]byte) (parent []int) {
 	vertices := l.Vertices
 
 	if known_signals != nil && len(*known_signals) != vertices {
@@ -55,9 +107,6 @@ func BFSFlow(l *flist.FList, s int, d int, known_signals *[]byte) (parent []int,
 	// parent[i] = j == vertex j is parent of i in BFS tree
 	parent = make([]int, vertices)
 
-	// Level of vertices in tree of BFS
-	level = make([]uint, vertices)
-
 	// Dealing with vertices between 0 -- N-1
 	vertex := s - 1
 
@@ -69,7 +118,7 @@ func BFSFlow(l *flist.FList, s int, d int, known_signals *[]byte) (parent []int,
 	Q.Insert(vertex)
 
 	// If the graph has weigths it fails here
-	neighbors, ok := l.Neighbors(vertex).(set.SetF)
+	neighbors, ok := l.Neighbors(vertex).(set.SetW[int, int])
 	if !ok {
 		return
 	}
@@ -80,19 +129,17 @@ func BFSFlow(l *flist.FList, s int, d int, known_signals *[]byte) (parent []int,
 
 		// Vertex being explored and its level in tree
 		exploring := e.Vertex
-		level_exploring_plus := level[exploring] + 1
 
-		neighbors = l.Neighbors(exploring).(set.SetF)
+		neighbors = l.Neighbors(exploring).(set.SetW[int, int])
 
 		// For each neighbor of vertex
 		for w := range neighbors {
 			if (*signal)[w] == 0 {
-				(*signal)[w] = 1                // Mark vertex
-				Q.Insert(int(w))                // Insert in queue
-				parent[w] = exploring + 1       // Save its parent
-				level[w] = level_exploring_plus // Save its level
+				(*signal)[w] = 1          // Mark vertex
+				Q.Insert(w)               // Insert in queue
+				parent[w] = exploring + 1 // Save its parent
 
-				if int(w+1) == d {
+				if w+1 == d {
 					return
 				}
 			}
@@ -102,16 +149,57 @@ func BFSFlow(l *flist.FList, s int, d int, known_signals *[]byte) (parent []int,
 	return
 }
 
-func Bottleneck(l *flist.FList, s int, t int) int {
-	parents, _ := BFSFlow(l, s, t, nil)
+func Bottleneck(res *awlists.WList[int], P []int) int {
+	if len(P) == 1 {
+		return 0
+	}
 
-	ls := MyWay(parents, t)
+	b := res.Vector[P[1]][P[0]]
 
-	b := l.Vector[ls[1]-1][uint32(ls[0]-1)][0]
-
-	for i := 2; i < len(ls); i++ {
-		b = min(b, l.Vector[ls[i]-1][uint32(ls[i-1]-1)][0])
+	for i := 2; i < len(P); i++ {
+		b = min(b, res.Vector[P[i]][P[i-1]])
 	}
 
 	return b
+}
+
+func Augment(l *flist.FList, res *awlists.WList[int], P []int) int {
+	b := Bottleneck(res, P)
+
+	if b == 0 {
+		return b
+	}
+
+	for i := 1; i < len(P); i++ {
+		if l.Vector[P[i]].Contains(uint32(P[i-1])) {
+			actualFlow := l.Vector[P[i]][uint32(P[i-1])].GetFlow()
+			l.Vector[P[i]].UpdateFlow(uint32(P[i-1]), actualFlow+b)
+		} else {
+			actualFlow := l.Vector[P[i-1]][uint32(P[i])].GetFlow()
+			l.Vector[P[i]].UpdateFlow(uint32(P[i]), actualFlow-b)
+		}
+	}
+
+	return b
+}
+
+func UpdateResidual(l *flist.FList, res *awlists.WList[int], P []int, delta int) {
+	for i := 1; i < len(P); i++ {
+		if l.Vector[P[i]].Contains(uint32(P[i-1])) {
+			res.Vector[P[i]][P[i-1]] = l.Vector[P[i]][uint32(P[i-1])].GetDiff()
+			res.Vector[P[i-1]][P[i]] = l.Vector[P[i]][uint32(P[i-1])].GetFlow()
+		} else {
+			res.Vector[P[i-1]][P[i]] = l.Vector[P[i-1]][uint32(P[i])].GetDiff()
+			res.Vector[P[i]][P[i-1]] = l.Vector[P[i-1]][uint32(P[i])].GetFlow()
+		}
+
+		// Deleting edges
+		if res.Vector[P[i]][P[i-1]] < delta {
+			res.Vector[P[i]].Remove(P[i-1])
+		}
+
+		if res.Vector[P[i-1]][P[i]] < delta {
+			res.Vector[P[i-1]].Remove(P[i])
+		}
+	}
 }

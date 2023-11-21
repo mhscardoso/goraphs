@@ -63,11 +63,11 @@ func MyWay(parents []int, vertex int) []int {
 
 	way := make([]int, 0, len(parents))
 
-	way = append(way, vertex)
+	way = append(way, vertex-1)
 
 	parent := parents[vertex-1]
 	for parent != 0 {
-		way = append(way, parent)
+		way = append(way, parent-1)
 		parent = parents[parent-1]
 	}
 

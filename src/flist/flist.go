@@ -26,7 +26,7 @@ func (l *FList) Allocate(vertices int) {
 	l.Vertices = vertices
 }
 
-func (l *FList) Relate(vertex, neighbor int, weigth float64, edges *int) {
+func (l *FList) Relate(vertex, neighbor int, weigth int, edges *int) {
 	v := vertex - 1
 	n := neighbor - 1
 
@@ -34,10 +34,10 @@ func (l *FList) Relate(vertex, neighbor int, weigth float64, edges *int) {
 		return
 	}
 
-	l.Vector[v].Add(uint32(n), int(weigth), 0)
+	l.Vector[v].Add(uint32(n), weigth, 0)
 
 	if !l.Targeted {
-		l.Vector[n].Add(uint32(v), int(weigth), 0)
+		l.Vector[n].Add(uint32(v), weigth, 0)
 	}
 
 	*edges++

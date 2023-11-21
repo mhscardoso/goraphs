@@ -66,22 +66,30 @@ func (s SetW[K, T]) Remove(e K) {
 	delete(s, e)
 }
 
-type waf [2]int
+type Waf [2]int
 
-func (w *waf) SetWaf(weigth int, flow int) {
+func (w *Waf) SetWaf(weigth int, flow int) {
 	w[0] = weigth
 	w[1] = flow
 }
 
-func (w *waf) GetWeigth() int {
+func (w *Waf) SefFlow(flow int) {
+	w[1] = flow
+}
+
+func (w *Waf) GetWeigth() int {
 	return w[0]
 }
 
-func (w *waf) GetFlow() int {
+func (w Waf) GetFlow() int {
 	return w[1]
 }
 
-type SetF map[uint32]waf
+func (w Waf) GetDiff() int {
+	return w[0] - w[1]
+}
+
+type SetF map[uint32]Waf
 
 func NewF() SetF {
 	s := SetF{}
@@ -89,8 +97,17 @@ func NewF() SetF {
 }
 
 func (s SetF) Add(e uint32, w int, f int) {
-	var data waf
+	var data Waf
 	data.SetWaf(w, f)
+
+	s[e] = data
+}
+
+func (s SetF) UpdateFlow(e uint32, f int) {
+	var data Waf
+	data = s[e]
+
+	data[1] = f
 
 	s[e] = data
 }
