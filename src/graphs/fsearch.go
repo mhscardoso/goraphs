@@ -2,6 +2,7 @@ package graphs
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/mhscardoso/goraphs/container/queue"
 	"github.com/mhscardoso/goraphs/container/set"
@@ -17,8 +18,6 @@ func FordFulkerson(l *flist.FList, s int, t int, delta int) {
 	for {
 		P := MyWay(BFSWeigth(residual, s, t, nil), t)
 
-		//fmt.Printf("Out: %v - %v\n", P, initial_delta)
-
 		for len(P) == 1 && initial_delta >= 1 {
 			initial_delta /= 2
 			if initial_delta == 0 {
@@ -26,15 +25,10 @@ func FordFulkerson(l *flist.FList, s int, t int, delta int) {
 			}
 			AugmentResidual(l, residual, initial_delta)
 			P = MyWay(BFSWeigth(residual, s, t, nil), t)
-
-			fmt.Printf("In: %v - %v\n", P, initial_delta)
 		}
 
-		b := Augment(l, residual, P)
+		Augment(l, residual, P)
 		AugmentResidual(l, residual, initial_delta)
-
-		fmt.Printf("Out: %v - %v -- ", P, initial_delta)
-		fmt.Printf("Bottleneck: %v\n", b)
 	}
 }
 
@@ -202,4 +196,33 @@ func UpdateResidual(l *flist.FList, res *awlists.WList[int], P []int, delta int)
 			res.Vector[P[i-1]].Remove(P[i])
 		}
 	}
+}
+
+func WriteFordResult(l *flist.FList, s int, t int, delta int, filename string) {
+	fmt.Printf("Realizando o Ford-Fulkerson\n")
+	FordFulkerson(l, s, t, delta)
+
+	f, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	maxFlow := 0
+
+	for _, v := range l.Vector[s-1] {
+		maxFlow += v.GetFlow()
+	}
+
+	fmt.Printf("Escrevendo o arquivo em %v\n", filename)
+	f.WriteString(fmt.Sprintf("Máximo entre %v e %v: %v\n", s, t, maxFlow))
+
+	for i, v := range l.Vector {
+		for k, w := range v {
+			f.WriteString(fmt.Sprintf("%v - %v - %v\n", i+1, k+1, w.GetFlow()))
+		}
+	}
+
+	fmt.Printf("Arquivo escrito.\n")
 }
