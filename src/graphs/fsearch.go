@@ -28,7 +28,7 @@ func FordFulkerson(l *flist.FList, s int, t int, delta int) {
 		}
 
 		Augment(l, residual, P)
-		AugmentResidual(l, residual, initial_delta)
+		UpdateResidual(l, residual, P, initial_delta)
 	}
 }
 
