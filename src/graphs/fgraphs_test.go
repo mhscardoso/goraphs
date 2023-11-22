@@ -8,10 +8,10 @@ import (
 
 // Corretor, edite estas variáveis para que possa ler os arquivos corretos!
 var filename = []string{
-	// "../../../grafos/TP3/grafo_rf_1.txt",
-	// "../../../grafos/TP3/grafo_rf_2.txt",
-	// "../../../grafos/TP3/grafo_rf_3.txt",
-	// "../../../grafos/TP3/grafo_rf_4.txt",
+	"../../../grafos/TP3/grafo_rf_1.txt",
+	"../../../grafos/TP3/grafo_rf_2.txt",
+	"../../../grafos/TP3/grafo_rf_3.txt",
+	"../../../grafos/TP3/grafo_rf_4.txt",
 	"../../../grafos/TP3/grafo_rf_5.txt",
 	"../../../grafos/TP3/grafo_rf_6.txt",
 }
@@ -20,6 +20,7 @@ func TestFord(t *testing.T) {
 	rounds := 10
 	source := 1
 	target := 2
+	delta := 1
 
 	for _, name := range filename {
 		var totalTime float64 = 0
@@ -32,7 +33,7 @@ func TestFord(t *testing.T) {
 			fmt.Printf("%vº Ford-Fulkerson - ", i+1)
 
 			t1 := time.Now()
-			FordFulkerson(A, source, target, 16384)
+			FordFulkerson(A, source, target, delta)
 			t2 := time.Now()
 
 			totalTime += t2.Sub(t1).Seconds()

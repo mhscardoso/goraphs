@@ -53,6 +53,27 @@ func ResidualGraph(l *flist.FList, delta int) *awlists.WList[int] {
 	return residual
 }
 
+func UpdateResidual(l *flist.FList, res *awlists.WList[int], P []int, delta int) {
+	for i := 1; i < len(P); i++ {
+		if l.Vector[P[i]].Contains(uint32(P[i-1])) {
+			res.Vector[P[i]][P[i-1]] = l.Vector[P[i]][uint32(P[i-1])].GetDiff()
+			res.Vector[P[i-1]][P[i]] = l.Vector[P[i]][uint32(P[i-1])].GetFlow()
+		} else {
+			res.Vector[P[i-1]][P[i]] = l.Vector[P[i-1]][uint32(P[i])].GetDiff()
+			res.Vector[P[i]][P[i-1]] = l.Vector[P[i-1]][uint32(P[i])].GetFlow()
+		}
+
+		// Deleting edges
+		if res.Vector[P[i]][P[i-1]] < delta {
+			res.Vector[P[i]].Remove(P[i-1])
+		}
+
+		if res.Vector[P[i-1]][P[i]] < delta {
+			res.Vector[P[i-1]].Remove(P[i])
+		}
+	}
+}
+
 func AugmentResidual(l *flist.FList, res *awlists.WList[int], delta int) {
 	// Iterating over all vertices
 	for i, w := range l.Vector {
@@ -70,6 +91,40 @@ func AugmentResidual(l *flist.FList, res *awlists.WList[int], delta int) {
 			}
 		}
 	}
+}
+
+func Bottleneck(res *awlists.WList[int], P []int) int {
+	if len(P) == 1 {
+		return 0
+	}
+
+	b := res.Vector[P[1]][P[0]]
+
+	for i := 2; i < len(P); i++ {
+		b = min(b, res.Vector[P[i]][P[i-1]])
+	}
+
+	return b
+}
+
+func Augment(l *flist.FList, res *awlists.WList[int], P []int) int {
+	b := Bottleneck(res, P)
+
+	if b == 0 {
+		return b
+	}
+
+	for i := 1; i < len(P); i++ {
+		if l.Vector[P[i]].Contains(uint32(P[i-1])) {
+			actualFlow := l.Vector[P[i]][uint32(P[i-1])].GetFlow()
+			l.Vector[P[i]].UpdateFlow(uint32(P[i-1]), actualFlow+b)
+		} else {
+			actualFlow := l.Vector[P[i-1]][uint32(P[i])].GetFlow()
+			l.Vector[P[i]].UpdateFlow(uint32(P[i]), actualFlow-b)
+		}
+	}
+
+	return b
 }
 
 /* New BFS written to support
@@ -141,61 +196,6 @@ func BFSWeigth(l *awlists.WList[int], s int, d int, known_signals *[]byte) (pare
 	}
 
 	return
-}
-
-func Bottleneck(res *awlists.WList[int], P []int) int {
-	if len(P) == 1 {
-		return 0
-	}
-
-	b := res.Vector[P[1]][P[0]]
-
-	for i := 2; i < len(P); i++ {
-		b = min(b, res.Vector[P[i]][P[i-1]])
-	}
-
-	return b
-}
-
-func Augment(l *flist.FList, res *awlists.WList[int], P []int) int {
-	b := Bottleneck(res, P)
-
-	if b == 0 {
-		return b
-	}
-
-	for i := 1; i < len(P); i++ {
-		if l.Vector[P[i]].Contains(uint32(P[i-1])) {
-			actualFlow := l.Vector[P[i]][uint32(P[i-1])].GetFlow()
-			l.Vector[P[i]].UpdateFlow(uint32(P[i-1]), actualFlow+b)
-		} else {
-			actualFlow := l.Vector[P[i-1]][uint32(P[i])].GetFlow()
-			l.Vector[P[i]].UpdateFlow(uint32(P[i]), actualFlow-b)
-		}
-	}
-
-	return b
-}
-
-func UpdateResidual(l *flist.FList, res *awlists.WList[int], P []int, delta int) {
-	for i := 1; i < len(P); i++ {
-		if l.Vector[P[i]].Contains(uint32(P[i-1])) {
-			res.Vector[P[i]][P[i-1]] = l.Vector[P[i]][uint32(P[i-1])].GetDiff()
-			res.Vector[P[i-1]][P[i]] = l.Vector[P[i]][uint32(P[i-1])].GetFlow()
-		} else {
-			res.Vector[P[i-1]][P[i]] = l.Vector[P[i-1]][uint32(P[i])].GetDiff()
-			res.Vector[P[i]][P[i-1]] = l.Vector[P[i-1]][uint32(P[i])].GetFlow()
-		}
-
-		// Deleting edges
-		if res.Vector[P[i]][P[i-1]] < delta {
-			res.Vector[P[i]].Remove(P[i-1])
-		}
-
-		if res.Vector[P[i-1]][P[i]] < delta {
-			res.Vector[P[i-1]].Remove(P[i])
-		}
-	}
 }
 
 func WriteFordResult(l *flist.FList, s int, t int, delta int, filename string) {

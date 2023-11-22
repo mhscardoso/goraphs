@@ -35,6 +35,30 @@ go test -run <Function Name>
 
 o nome das funções é visível nos arquivos de teste.
 
+Para este trabalho prático, a única função implementada foi
+
+```{go}
+func TestFord(t *testing.T)
+```
+
+nela, você poderá alterar o delta, a fonte e o sumidouro. Além disso, poderá adaptar os nomes
+dos arquivos na variável <em>filename</em> que é um array de string.
+
+Para testar, basta fazer:
+
+```{bash}
+cd src/graphs
+go test -run TestFord
+```
+
+é recomendável que coloque um limite
+maior para o <em>timeout</em> para que
+suporte por mais tempo, fazendo:
+
+```{bash}
+go test -run TestFord -timeout=9999s
+```
+
 **OBS1:** Os arquivos de teste são aqueles que terminam com <em>_test.go</em>
 
 # Apresentação
