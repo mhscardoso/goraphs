@@ -3,6 +3,7 @@ package graphs
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/mhscardoso/goraphs/container/queue"
 	"github.com/mhscardoso/goraphs/container/set"
@@ -225,4 +226,52 @@ func WriteFordResult(l *flist.FList, s int, t int, delta int, filename string) {
 	}
 
 	fmt.Printf("Arquivo escrito.\n")
+}
+
+func FordFulkersonStats(l *flist.FList, s int, t int, delta int) (int, float64, float64, int, float64) {
+	initial_delta := delta
+
+	t1 := time.Now()
+	residual := ResidualGraph(l, initial_delta)
+	t2 := time.Now()
+
+	residualTime := t2.Sub(t1).Seconds()
+
+	BFStimes := 0
+	var BFStotal float64 = 0
+	augs := 0
+	var AugTime float64 = 0
+
+	for {
+		BFStimes++
+		t1 = time.Now()
+		P := MyWay(BFSWeigth(residual, s, t, nil), t)
+		t2 = time.Now()
+
+		BFStotal += t2.Sub(t1).Seconds()
+
+		for len(P) == 1 && initial_delta >= 1 {
+			initial_delta /= 2
+			if initial_delta == 0 {
+				return BFStimes, BFStotal, residualTime, augs, AugTime
+			}
+
+			augs++
+			t1 = time.Now()
+			AugmentResidual(l, residual, initial_delta)
+			t2 = time.Now()
+
+			AugTime += t2.Sub(t1).Seconds()
+
+			BFStimes++
+			t1 = time.Now()
+			P = MyWay(BFSWeigth(residual, s, t, nil), t)
+			t2 = time.Now()
+
+			BFStotal += t2.Sub(t1).Seconds()
+		}
+
+		Augment(l, residual, P)
+		UpdateResidual(l, residual, P, initial_delta)
+	}
 }

@@ -64,8 +64,6 @@ func ConectedComponents(g Graph) *queue.Queue[*queue.Queue[int]] {
 			continue
 		}
 
-		fmt.Printf("Vertex: %v\n", i+1)
-
 		components.Insert(new(queue.Queue[int])) // Add in Last
 
 		BFS(g, i+1, 0, &signals)
